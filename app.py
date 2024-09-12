@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 from heirs import Heirs
 from fiqh import Fiqh
 from inheritance import get_results
@@ -11,6 +12,7 @@ DEBUG = False
 
 # TODO: Find in another project if this solves the multi app instances
 app = Flask(__name__)
+CORS(app)
 app.fiqh = Fiqh()
 app.fiqh.initialize()
 
