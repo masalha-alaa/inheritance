@@ -1,0 +1,59 @@
+relative_details:
+  husband:
+    id: "tb1"
+  wives:
+    id: "tb2"
+  sons:
+    id: "tb3"
+  daughters:
+    id: "tb4"
+  grandsons:
+    id: "tb5"
+  granddaughters:
+    id: "tb6"
+  father:
+    id: "tb7"
+  mother:
+    id: "tb8"
+  grandfather:
+    id: "tb9"
+  paternal_grandmother:
+    id: "tb10"
+  maternal_grandmother:
+    id: "tb11"
+  full_brothers:
+    id: "tb12"
+  full_sisters:
+    id: "tb13"
+  paternal_brothers:
+    id: "tb14"
+  paternal_sisters:
+    id: "tb15"
+  maternal_brothers:
+    id: "tb16"
+  maternal_sisters:
+    id: "tb17"
+  full_nephews:
+    id: "tb18"
+  paternal_nephews:
+    id: "tb19"
+  full_nephews_sons:
+    id: "tb20"
+  paternal_nephews_sons:
+    id: "tb21"
+  full_paternal_uncles:
+    id: "tb22"
+  paternal_paternal_uncles:
+    id: "tb23"
+  full_cousins:
+    id: "tb24"
+  paternal_cousins:
+    id: "tb25"
+  full_cousins_sons:
+    id: "tb26"
+  paternal_cousins_sons:
+    id: "tb27"
+  full_cousins_grandsons:
+    id: "tb28"
+  paternal_cousins_grandsons:
+    id: "tb29"

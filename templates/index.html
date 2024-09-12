@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inheritance Table</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 10px;
+      text-align: center;
+    }
+    input[type="number"] {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Inheritance Table</h1>
+
+    <div>
+      <label for="estate">Estate:</label>
+      <input type="number" id="estate" name="estate" min="0" max="1000000000" value="24" 
+             placeholder="Enter estate value (default 24)" 
+             onkeydown="checkEnterKey(event);"
+             onkeydown="return isNumberKey(event);"
+             oninput="limitInput(this, 1000000000)">
+    </div>
+
+
+<!-- IF HEIRS ORDER IS CHANGED, MUST CHANGE HeirsOrderInHtml(Enum) IN PYTHON  -->
+  <table>
+    <thead>
+      <tr>
+        <th>Heir</th>
+        <th>Number</th>
+        <th>
+          Heritage (by Ali Aloush)
+          <br>
+          <small>share: count x amount (+radd)</small>
+        </th>
+        <th>Heritage (Fiqh)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Husband</td>
+        <td><input type="number" id="number0" value="0" min="0" max="1" onchange="validateHusbandWife('husband')" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy0"></td>
+        <td id="heritageFiqh0"></td>
+      </tr>
+      <tr>
+        <td>Wife</td>
+        <td><input type="number" id="number1" value="0" min="0" max="1" onchange="validateHusbandWife('wife')" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy1"></td>
+        <td id="heritageFiqh1"></td>
+      </tr>
+      <tr>
+        <td>Son</td>
+        <td><input type="number" id="number2" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
+        <td id="heritageStudy2"></td>
+        <td id="heritageFiqh2"></td>
+      </tr>
+      <tr>
+        <td>Daughter</td>
+        <td><input type="number" id="number3" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
+        <td id="heritageStudy3"></td>
+        <td id="heritageFiqh3"></td>
+      </tr>
+      <tr>
+        <td>Father</td>
+        <td><input type="number" id="number4" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy6"></td>
+        <td id="heritageFiqh6"></td>
+      </tr>
+      <tr>
+        <td>Mother</td>
+        <td><input type="number" id="number5" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy7"></td>
+        <td id="heritageFiqh7"></td>
+      </tr>
+      <tr>
+        <td>Brother</td>
+        <td><input type="number" id="number6" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
+        <td id="heritageStudy4"></td>
+        <td id="heritageFiqh4"></td>
+      </tr>
+      <tr>
+        <td>Sister</td>
+        <td><input type="number" id="number7" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
+        <td id="heritageStudy5"></td>
+        <td id="heritageFiqh5"></td>
+      </tr>
+      <tr>
+        <td>Relatives</td>
+        <td><input type="number" id="number8" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy8"></td>
+        <td id="heritageFiqh8"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br>
+  <button onclick="fillHeritageColumns()">Calculate Heritage</button>
+  
+    <hr style="height:2px;border-width:0;background-color:gray">
+
+    <!-- Important Notes Section -->
+    <div class="important-notes">
+      <h3>Important Notes:</h3>
+      <ul>
+        <li>This is for research purposes only. Do not apply in real life.</li>
+        <li>This is a beta version, please <a href="mailto: alaa137@gmail.com">contact us</a> if you find any errors or bugs.</li>
+        <li>The "Heritage (by Ali Aloush)" values are based on Ali's <a href="https://www.youtube.com/playlist?list=PLydybbv8P4rt9OiWJTUslroR7EzUOiVmg">YouTube series</a> [mirror with English subtitles will be gradually uploaded to reddit at <a href="https://www.reddit.com/r/Islamipedia/">r/Islamipedia</a>].</li>
+        <li>The "Heritage (Fiqh)" values are based on the website <a href="http://inheritance.ilmsummit.org//projects/inheritance/home.aspx">http://inheritance.ilmsummit.org/</a>.</li>
+        <li>Currently the algorithm can handle only up to one wife. If your usecase has multiple wives, please simply divide the calculated wife's share between all wives equally.</li>
+        <li>Currently the algorithm does not support grandparents. According to Ali Aloush's study, the grandparents from the father's side / mother's side take the father's / mother's inheritance roles (respectively) when they are absent. So please fill their numbers in the father / mother fields if the father / mother has passed and the grandfather / grandmother is alive.</li>
+        <li>Currently the algorithm does not support grandchildren. According to Ali Aloush's study, the grandchildren inherit exactly as the children do (grandsons as sons and granddaughters as daughters), regardless of whether the direct children are alive or not. E.g. if the sons' share is 100K, and there are 2 sons and 3 grandsons, each son or grandson will take 20K.</li>
+        <li>According to Ali Aloush's study, unlike the Fiqh's ideology, there is no differentiation between full-siblings and half-siblings. That's why they're not separated in the table, and the Fiqh's solution in the "Heritage (Fiqh)" column will be calculated as if all siblings were full-siblings (although in the Fiqh approach they do separate between half and full).</li>
+        <li>Currently the algorithm can handle up to one relative. If your usecase has multiple relatives, please simply divide the calculated "Relatives" share between them equally.</li>
+      </ul>
+    </div>
+
+  
+
+  <script>
+    // Prevent both Husband and Wife from being 1
+    function validateHusbandWife(spouse) {
+      const husband = document.getElementById('number0');
+      const wife = document.getElementById('number1');
+      if (husband.value == 1 && wife.value == 1) {
+        alert("Both Husband and Wife cannot be 1. One must be 0.");
+        if(spouse == "husband")
+        {
+            husband.value = 0;
+        }
+        else if(spouse == "wife")
+        {
+            wife.value = 0;
+        }
+      }
+    }
+
+    // Function to restrict user input to numbers (disables arrows, ensures keyboard input)
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    // Function to limit the input value to a maximum
+    function limitInput(input, maxValue) {
+        if (input.value > maxValue) {
+            input.value = maxValue;
+        }
+    }
+
+    // Function to detect if Enter key is pressed
+    function checkEnterKey(event) {
+        if (event.keyCode === 13) {  // 13 is the Enter key
+            fillHeritageColumns();    // Invoke the function
+        }
+    }
+
+    // Function to calculate and fill the Heritage columns by calling the Flask API
+    function fillHeritageColumns() {
+      const heirs = [];
+      for (let i = 0; i < 9; i++) {
+        const number = document.getElementById(`number${i}`).value;
+        heirs.push(Number(number));
+      }
+      
+      // Get the estate value from the input field
+      estateValue = document.getElementById("estate").value;
+      if (estateValue == "") {
+        estateValue = 24;
+      }
+      
+
+      // Send a POST request to the Flask API with the heirs data
+      fetch('/calculate_heritage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ heirs: heirs, estate: estateValue })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Update the "Heritage (our study)" column based on the response
+        for (let i = 0; i < 9; i++) {
+          document.getElementById(`heritageStudy${i}`).innerText = data['study'][i];
+        }
+      })
+      .catch(error => console.error('Error:', error));
+      
+      fetch('/calculate_heritage_fiqh', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ heirs: heirs, estate: estateValue })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Update the "Heritage (Fiqh)" column based on the response
+        for (let i = 0; i < 9; i++) {
+          document.getElementById(`heritageFiqh${i}`).innerText = data['fiqh'][i];
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+
+  </script>
+
+</body>
+</html>
