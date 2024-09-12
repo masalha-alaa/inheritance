@@ -47,7 +47,7 @@ def calculate_heritage():
         pprint(result, sort_dicts=False)
 
     # Return the results as JSON
-    return jsonify({'study': list(result.values())})
+    return jsonify({'study': list(result.values()), 'error': len(result) == 0})
 
 
 # Define a route to handle the data and run the algorithm
@@ -73,7 +73,7 @@ def calculate_heritage_fiqh():
         pprint(result, sort_dicts=False)
 
     # Return the results as JSON
-    return jsonify({'fiqh': list(result.values())})
+    return jsonify({'fiqh': list(result.values()), 'error': len(result) == 0})
     # return jsonify({'study': [[', '.join([str(x) for x in r])] for r in result.values()], 'fiqh': [0] * 9})
 
 

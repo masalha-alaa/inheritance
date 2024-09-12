@@ -31,6 +31,8 @@ class Fiqh:
         input_fields = self.heirs_to_input_fields(heirs)
         form_fields = self.inflate(input_fields, self.relative_details)
         response = self.send_request(self.br, form_fields)
+        if response is None:
+            return dict()
         try:
             df = self.parse_response(response)
             final_results = self.fiqh_fields_to_dict(df)
@@ -53,8 +55,12 @@ class Fiqh:
         # set the relevant ASP.NET fields, as required in the page's onSubmit function
         # Your .aspx page may not have these
         # Luckily we can ignore the __VIEWSTATE variable: mechanize handles this for us.
-        for k, v in form_fields_dict.items():
-            br[k] = v
+        try:
+            for k, v in form_fields_dict.items():
+                br[k] = v
+        except mechanize.ControlNotFoundError as e:
+            print(f"ControlNotFoundError: {e}")
+            return None
         br.submit()
         response = bs(br.response().read(), features="lxml")
         return response
@@ -110,5 +116,6 @@ if __name__ == '__main__':
     fiqh = Fiqh()
     fiqh.initialize()
     # heirs = Heirs(wife=True, son=1, daughter=1, brother=1, sister=1, father=True, mother=True, relatives=1)
-    heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
+    # heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
+    heirs = Heirs(husband=True, son=2)
     print(fiqh.run(heirs))

@@ -194,6 +194,9 @@
       })
       .then(response => response.json())
       .then(data => {
+        if (data['error']) {
+            alert("An error occurred while calculating Heritage (by Ali Aloush). Please try again.");
+        }
         // Update the "Heritage (our study)" column based on the response
         for (let i = 0; i < 9; i++) {
           document.getElementById(`heritageStudy${i}`).innerText = data['study'][i];
@@ -210,6 +213,9 @@
       })
       .then(response => response.json())
       .then(data => {
+        if (data['error']) {
+            alert("An error occurred while calculating Heritage (Fiqh). Please try again.");
+        }
         // Update the "Heritage (Fiqh)" column based on the response
         for (let i = 0; i < 9; i++) {
           document.getElementById(`heritageFiqh${i}`).innerText = data['fiqh'][i];
