@@ -6,12 +6,11 @@ from inheritance import get_results
 from pprint import pprint
 from my_utils import HeirsOrderInHtml as HOIH
 
-# DEBUG = True
-DEBUG = False
 
-
-# TODO: Find in another project if this solves the multi app instances
 app = Flask(__name__)
+app.config['DEBUG'] = False
+# app.config['DEBUG'] = True
+app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024  # Limit to 8MB
 CORS(app)
 app.fiqh = Fiqh()
 app.fiqh.initialize()
@@ -42,7 +41,7 @@ def calculate_heritage():
     # Run the algorithm and get the results
     _, _, _, result = get_results(problem, estate)  # Modify this line according to your class method
 
-    if DEBUG:
+    if app.config['DEBUG']:
         print("Ali Aloush:")
         pprint(result, sort_dicts=False)
 
@@ -68,7 +67,7 @@ def calculate_heritage_fiqh():
     # Run the algorithm and get the results
     result = app.fiqh.run(problem)  # Modify this line according to your class method
 
-    if DEBUG:
+    if app.config['DEBUG']:
         print("Fiqh:")
         pprint(result, sort_dicts=False)
 
