@@ -19,6 +19,8 @@ class Fiqh:
         # Set the user-agent as Mozilla - if the page knows we're Mechanize, it won't return all fields
         br.addheaders = [('User-agent',
                           'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+        # br.addheaders = [('User-agent',
+        #                   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36')]
         br.open(url)
         self.br = br
 
@@ -32,13 +34,14 @@ class Fiqh:
         form_fields = self.inflate(input_fields, self.relative_details)
         response = self.send_request(self.br, form_fields)
         if response is None:
-            return dict()
+            return dict(), False
+        awl_applied = "shares have exceeded 100%" in response.text
         try:
             df = self.parse_response(response)
             final_results = self.fiqh_fields_to_dict(df)
         except ValueError:
             final_results = dummy
-        return final_results if final_results else dummy
+        return final_results if final_results else dummy, awl_applied
 
     def heirs_to_input_fields(self, heirs: Heirs):
         return {'husband': int(heirs.husband), 'wives': int(heirs.wife), 'sons': heirs.son, 'daughters': heirs.daughter, 'father': int(heirs.father), 'mother': int(heirs.mother), 'full_brothers': heirs.brother, 'full_sisters': heirs.sister, 'full_cousins': heirs.relatives}
@@ -116,6 +119,8 @@ if __name__ == '__main__':
     fiqh = Fiqh()
     fiqh.initialize()
     # heirs = Heirs(wife=True, son=1, daughter=1, brother=1, sister=1, father=True, mother=True, relatives=1)
-    # heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
-    heirs = Heirs(husband=True, son=2)
-    print(fiqh.run(heirs))
+    heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
+    # heirs = Heirs(husband=True, son=2)
+    shares, awl_applied = fiqh.run(heirs)
+    print(shares)
+    print(f"{awl_applied = }")

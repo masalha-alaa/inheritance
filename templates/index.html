@@ -17,7 +17,7 @@
     input[type="number"] {
       width: 100%;
     }
-  </style>
+    </style>
 </head>
 <body>
 
@@ -44,7 +44,9 @@
           <br>
           <small>share: count x amount (+radd)</small>
         </th>
-        <th>Heritage (Fiqh)</th>
+        <th>Heritage (Fiqh)<br>
+            <span id="awl-message" style="display: inline; color: red; font-size: small;">&nbsp</span>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -213,8 +215,19 @@
       })
       .then(response => response.json())
       .then(data => {
+        // Check if 'awl' is true and update the message under "Heritage (Fiqh)"
+        const awlMessage = document.getElementById("awl-message");
+        if (awlMessage) {
+            if (data['awl'] === true) {
+                awlMessage.textContent  = "Awl was applied";
+            } else if (data['awl'] === false) {
+                awlMessage.textContent  = '\u00A0';
+            }
+        } else {
+            console.error("Awl message element not found");
+        }
         if (data['error']) {
-            alert("An error occurred while calculating Heritage (Fiqh). Please try again.");
+            alert("An error occurred while calculating Heritage (Fiqh). Please refresh the page and try again.");
         }
         // Update the "Heritage (Fiqh)" column based on the response
         for (let i = 0; i < 9; i++) {
