@@ -33,6 +33,7 @@ class Fiqh:
         input_fields = self.heirs_to_input_fields(heirs)
         form_fields = self.inflate(input_fields, self.relative_details)
         response = self.send_request(self.br, form_fields)
+        self.br.back()
         if response is None:
             return dict(), False
         awl_applied = "shares have exceeded 100%" in response.text
