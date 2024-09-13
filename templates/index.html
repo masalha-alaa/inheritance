@@ -173,6 +173,9 @@
     }
     
     function clearTable() {
+        const awlMessage = document.getElementById("awl-message");
+        awlMessage.textContent = '\u00A0';
+                
         // Select all input elements (Numbers column)
         const inputs = document.querySelectorAll('#table-body input[type="number"]');
         
@@ -239,9 +242,9 @@
         const awlMessage = document.getElementById("awl-message");
         if (awlMessage) {
             if (data['awl'] === true) {
-                awlMessage.textContent  = "Awl was applied";
+                awlMessage.textContent = "Awl was applied";
             } else if (data['awl'] === false) {
-                awlMessage.textContent  = '\u00A0';
+                awlMessage.textContent = '\u00A0';
             }
         } else {
             console.error("Awl message element not found");
