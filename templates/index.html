@@ -49,7 +49,7 @@
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="table-body">
       <tr>
         <td>Husband</td>
         <td><input type="number" id="number0" value="0" min="0" max="1" onchange="validateHusbandWife('husband')" oninput="limitInput(this, 1)"></td>
@@ -109,6 +109,7 @@
 
   <br>
   <button onclick="fillHeritageColumns()">Calculate Heritage</button>
+  <button onclick="clearTable()">Clear</button>
   
     <hr style="height:2px;border-width:0;background-color:gray">
 
@@ -170,7 +171,26 @@
             fillHeritageColumns();    // Invoke the function
         }
     }
+    
+    function clearTable() {
+        // Select all input elements (Numbers column)
+        const inputs = document.querySelectorAll('#table-body input[type="number"]');
+        
+        // Reset each input to 0
+        inputs.forEach(input => {
+            input.value = 0;
+        });
 
+        // Select all other cells (Heritage columns) and clear their text content
+        const cells = document.querySelectorAll('#table-body tr td:nth-child(3), #table-body tr td:nth-child(4)');
+        
+        // Clear each cell's text content
+        cells.forEach(cell => {
+            cell.textContent = '';
+        });
+    }
+
+    
     // Function to calculate and fill the Heritage columns by calling the Flask API
     function fillHeritageColumns() {
       const heirs = [];
