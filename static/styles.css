@@ -1,0 +1,15 @@
+
+#estate-input {
+    width: 200px;  /* You can adjust this value */
+    max-width: 100%;  /* Ensures the input won't exceed its container */
+    padding: 5px;  /* Add some padding for aesthetics */
+    box-sizing: border-box;  /* Ensures padding doesn't affect width */
+}
+
+body {
+    direction: ltr; /* Default direction */
+}
+
+body[lang="ar"] {
+    direction: rtl;
+}
