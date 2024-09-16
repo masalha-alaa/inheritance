@@ -58,56 +58,56 @@
       <tr>
         <td data-lang="husband">Husband</td>
         <td><input type="number" id="number0" value="0" min="0" max="1" onchange="validateHusbandWife('husband')" oninput="limitInput(this, 1)"></td>
-        <td id="heritageStudy0"></td>
-        <td id="heritageFiqh0"></td>
+        <td id="heritageStudy0" class="ltr-text"></td>
+        <td id="heritageFiqh0" class="ltr-text"></td>
       </tr>
       <tr>
         <td data-lang="wife">Wife</td>
         <td><input type="number" id="number1" value="0" min="0" max="1" onchange="validateHusbandWife('wife')" oninput="limitInput(this, 1)"></td>
-        <td id="heritageStudy1"></td>
-        <td id="heritageFiqh1"></td>
+        <td id="heritageStudy1" class="ltr-text"></td>
+        <td id="heritageFiqh1" class="ltr-text"></td>
       </tr>
       <tr>
         <td data-lang="son">Son</td>
         <td><input type="number" id="number2" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
-        <td id="heritageStudy2"></td>
-        <td id="heritageFiqh2"></td>
+        <td id="heritageStudy2" class="ltr-text"></td>
+        <td id="heritageFiqh2" class="ltr-text"></td>
       </tr>
       <tr>
         <td data-lang="daughter">Daughter</td>
         <td><input type="number" id="number3" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
-        <td id="heritageStudy3"></td>
-        <td id="heritageFiqh3"></td>
+        <td id="heritageStudy3" class="ltr-text"></td>
+        <td id="heritageFiqh3" class="ltr-text"></td>
       </tr>
       <tr>
         <td data-lang="father">Father</td>
         <td><input type="number" id="number4" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
-        <td id="heritageStudy6"></td>
-        <td id="heritageFiqh6"></td>
+        <td id="heritageStudy4" class="ltr-text"></td>
+        <td id="heritageFiqh4" class="ltr-text"></td>
       </tr>
       <tr>
         <td data-lang="mother">Mother</td>
         <td><input type="number" id="number5" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
-        <td id="heritageStudy7"></td>
-        <td id="heritageFiqh7"></td>
+        <td id="heritageStudy5" class="ltr-text"></td>
+        <td id="heritageFiqh5" class="ltr-text"></td>
       </tr>
       <tr>
         <td data-lang="brother">Brother</td>
         <td><input type="number" id="number6" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
-        <td id="heritageStudy4"></td>
-        <td id="heritageFiqh4"></td>
+        <td id="heritageStudy6" class="ltr-text"></td>
+        <td id="heritageFiqh6" class="ltr-text"></td>
       </tr>
       <tr>
         <td data-lang="sister">Sister</td>
         <td><input type="number" id="number7" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
-        <td id="heritageStudy5"></td>
-        <td id="heritageFiqh5"></td>
+        <td id="heritageStudy7" class="ltr-text"></td>
+        <td id="heritageFiqh7" class="ltr-text"></td>
       </tr>
       <tr>
         <td data-lang="relatives">Relatives</td>
         <td><input type="number" id="number8" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
-        <td id="heritageStudy8"></td>
-        <td id="heritageFiqh8"></td>
+        <td id="heritageStudy8" class="ltr-text"></td>
+        <td id="heritageFiqh8" class="ltr-text"></td>
       </tr>
     </tbody>
   </table>
@@ -131,6 +131,7 @@
         <li data-lang="note7"></li>
         <li data-lang="note8"></li>
         <li data-lang="note9"></li>
+        <li data-lang="note10"></li>
       </ul>
     </div>
 
@@ -283,6 +284,9 @@
         const data = await response.json();
         translations[lang] = data;
         applyTranslations(lang);
+        
+        document.querySelector('[data-lang="heritage_our_study"]').classList.add('ltr-text');
+        document.querySelector('[data-lang="heritage_fiqh"]').classList.add('ltr-text');
     }
 
     // Apply the translations to the page

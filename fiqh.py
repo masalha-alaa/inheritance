@@ -117,11 +117,12 @@ class Fiqh:
 
 
 if __name__ == '__main__':
+    from pprint import pprint
     fiqh = Fiqh()
     fiqh.initialize()
     # heirs = Heirs(wife=True, son=1, daughter=1, brother=1, sister=1, father=True, mother=True, relatives=1)
     heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
     # heirs = Heirs(husband=True, son=2)
     shares, awl_applied = fiqh.run(heirs)
-    print(shares)
+    pprint(shares, sort_dicts=False)
     print(f"{awl_applied = }")
