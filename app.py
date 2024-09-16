@@ -52,7 +52,6 @@ def calculate_heritage():
 # Define a route to handle the data and run the algorithm
 @app.route('/calculate_heritage_fiqh', methods=['POST'])
 def calculate_heritage_fiqh():
-    print("in calculate_heritage_fiqh")
     data = request.json  # Receive the data sent from the front-end
     heirs = data.get('heirs')  # Extract the 'heirs' array (the "Number" column)
     problem = Heirs(husband=heirs[HOIH.HUSBAND.value],
