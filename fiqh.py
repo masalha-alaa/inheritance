@@ -28,18 +28,18 @@ class Fiqh:
         config = yaml.safe_load(open(config_filename))
         self.relative_details = config['relative_details']
 
-    def run(self, heirs: Heirs):
-        dummy = {h: display_fraction_in_unicode(F(0, 1)) for h in HeirsOrderInHtml}
+    def run(self, heirs: Heirs, estate=24):
+        dummy = {h: f"{display_fraction_in_unicode(F(0, 1))} ≡ 0" for h in HeirsOrderInHtml}
         input_fields = self.heirs_to_input_fields(heirs)
         form_fields = self.inflate(input_fields, self.relative_details)
         response = self.send_request(self.br, form_fields)
         self.br.back()
         if response is None:
             return dict(), False
-        awl_applied = "shares have exceeded 100%" in response.text
+        awl_applied = "shares have exceeded 100%" in response.text.lower()
         try:
             df = self.parse_response(response)
-            final_results = self.fiqh_fields_to_dict(df)
+            final_results = self.fiqh_fields_to_dict(df, estate=estate)
         except ValueError:
             final_results = dummy
         return final_results if final_results else dummy, awl_applied
@@ -81,9 +81,9 @@ class Fiqh:
     def _eval_percentage(self, percentage):
         return round(float(percentage.replace("%", "")) / 100, 4)
 
-    def fiqh_fields_to_dict(self, fiqh_fields: pd.DataFrame):
+    def fiqh_fields_to_dict(self, fiqh_fields: pd.DataFrame, estate):
         fiqh_fields.set_index("Relative Category", inplace=True)
-        shares_d = {}
+        shares_d = dict()
         shares_d['husband'] = F(0, 1)
         shares_d['wife'] = F(0, 1)
         shares_d['son'] = F(0, 1)
@@ -112,7 +112,8 @@ class Fiqh:
         if 'FullCousin' in fiqh_fields.index:
             shares_d['relatives'] = F(fiqh_fields.loc['FullCousin', 'Share Fraction'])
 
-        shares_d = {k: display_fraction_in_unicode(v) for k, v in shares_d.items()}
+        shares_d = {k: f"{display_fraction_in_unicode(v)} ≡ {float(v * estate):.2f}"
+                    for k, v in shares_d.items()}
         return shares_d
 
 

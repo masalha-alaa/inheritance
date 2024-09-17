@@ -120,7 +120,7 @@
 
     <!-- Important Notes Section -->
     <div class="important-notes">
-      <h3 data-lang="notes">Important Notes:</h3>
+      <h3 data-lang="notes">Important Notes</h3>
       <ul>
         <li data-lang="note1"></li>
         <li data-lang="note2"></li>
@@ -182,30 +182,48 @@
         }
     }
     
-    function clearTable() {
-        const awlMessage = document.getElementById("awl-message");
-        awlMessage.textContent = '\u00A0';
-                
-        // Select all input elements (Numbers column)
-        const inputs = document.querySelectorAll('#table-body input[type="number"]');
+    function clearTable(clear_numbers_col = true, clear_ali_calcs = true, clear_fiqh_cals = true) {
+        if (clear_numbers_col)
+        {
+            const awlMessage = document.getElementById("awl-message");
+            awlMessage.textContent = '\u00A0';
+                    
+            // Select all input elements (Numbers column)
+            const inputs = document.querySelectorAll('#table-body input[type="number"]');
+            
+            // Reset each input to 0
+            inputs.forEach(input => {
+                input.value = 0;
+            });
+        }
         
-        // Reset each input to 0
-        inputs.forEach(input => {
-            input.value = 0;
-        });
-
         // Select all other cells (Heritage columns) and clear their text content
-        const cells = document.querySelectorAll('#table-body tr td:nth-child(3), #table-body tr td:nth-child(4)');
+        cells = [];
+        if (clear_ali_calcs && clear_fiqh_cals)
+        {
+            cells = document.querySelectorAll('#table-body tr td:nth-child(3), #table-body tr td:nth-child(4)');
+        }
+        else if(clear_ali_calcs)
+        {
+            cells = document.querySelectorAll('#table-body tr td:nth-child(3)');
+        }
+        else if(clear_fiqh_cals)
+        {
+            cells = document.querySelectorAll('#table-body tr td:nth-child(4)');
+        }
         
         // Clear each cell's text content
-        cells.forEach(cell => {
-            cell.textContent = '';
-        });
+        if (cells.length > 0)
+        {
+            cells.forEach(cell => {
+                cell.textContent = '';
+            });
+        }
     }
-
     
     // Function to calculate and fill the Heritage columns by calling the Flask API
     function fillHeritageColumns() {
+      clearTable(false, false);
       const heirs = [];
       for (let i = 0; i < 9; i++) {
         const number = document.getElementById(`number${i}`).value;

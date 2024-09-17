@@ -116,7 +116,7 @@ class Amounts:
         get_fraction = lambda f: display_fraction_in_unicode(self.get_fraction(f))
         f_amount = self.get_float_amount
 
-        d = {HOIH.HUSBAND.name: [f"{get_fraction(amounts.husband)}: {int(heirs.husband)}x{f_amount(amounts.husband):.{PRECISION_DISPLAY}f} (+{float(self._radd.husband):.{PRECISION_DISPLAY}f})"], HOIH.WIFE.name: [f"{get_fraction(amounts.wife)}: {int(heirs.wife)}x{f_amount(amounts.wife):.{PRECISION_DISPLAY}f} (+{float(self._radd.wife):.{PRECISION_DISPLAY}f})"], HOIH.SON.name: [f"{get_fraction(amounts.son)}: {int(heirs.son)}x{one_heir_amount('son'):.{PRECISION_DISPLAY}f} (+{float(self._radd.son):.{PRECISION_DISPLAY}f})"], HOIH.DAUGHTER.name: [f"{get_fraction(amounts.daughter)}: {int(heirs.daughter)}x{one_heir_amount('daughter'):.{PRECISION_DISPLAY}f} (+{float(self._radd.daughter):.{PRECISION_DISPLAY}f})"], HOIH.BROTHER.name: [f"{get_fraction(amounts.brother)}: {int(heirs.brother)}x{one_heir_amount('brother'):.{PRECISION_DISPLAY}f} (+{float(self._radd.brother):.{PRECISION_DISPLAY}f})"], HOIH.SISTER.name: [f"{get_fraction(amounts.sister)}: {int(heirs.sister)}x{one_heir_amount('sister'):.{PRECISION_DISPLAY}f} (+{float(self._radd.sister):.{PRECISION_DISPLAY}f})"], HOIH.FATHER.name: [f"{get_fraction(amounts.father)}: {int(heirs.father)}x{f_amount(amounts.father):.{PRECISION_DISPLAY}f} (+{float(self._radd.father):.{PRECISION_DISPLAY}f})"], HOIH.MOTHER.name: [f"{get_fraction(amounts.mother)}: {int(heirs.mother)}x{f_amount(amounts.mother):.{PRECISION_DISPLAY}f} (+{float(self._radd.mother):.{PRECISION_DISPLAY}f})"], HOIH.RELATIVES.name: [f"{get_fraction(amounts.relatives)}: {int(heirs.relatives)}x{one_heir_amount('relatives'):.{PRECISION_DISPLAY}f} (+{float(self._radd.relatives):.{PRECISION_DISPLAY}f})"]}
+        d = {HOIH.HUSBAND.name: [f"{get_fraction(amounts.husband)}: {int(heirs.husband)} x {f_amount(amounts.husband):.{PRECISION_DISPLAY}f} (+{float(self._radd.husband):.{PRECISION_DISPLAY}f})"], HOIH.WIFE.name: [f"{get_fraction(amounts.wife)}: {int(heirs.wife)} x {f_amount(amounts.wife):.{PRECISION_DISPLAY}f} (+{float(self._radd.wife):.{PRECISION_DISPLAY}f})"], HOIH.SON.name: [f"{get_fraction(amounts.son)}: {int(heirs.son)} x {one_heir_amount('son'):.{PRECISION_DISPLAY}f} (+{float(self._radd.son):.{PRECISION_DISPLAY}f})"], HOIH.DAUGHTER.name: [f"{get_fraction(amounts.daughter)}: {int(heirs.daughter)} x {one_heir_amount('daughter'):.{PRECISION_DISPLAY}f} (+{float(self._radd.daughter):.{PRECISION_DISPLAY}f})"], HOIH.BROTHER.name: [f"{get_fraction(amounts.brother)}: {int(heirs.brother)} x {one_heir_amount('brother'):.{PRECISION_DISPLAY}f} (+{float(self._radd.brother):.{PRECISION_DISPLAY}f})"], HOIH.SISTER.name: [f"{get_fraction(amounts.sister)}: {int(heirs.sister)} x {one_heir_amount('sister'):.{PRECISION_DISPLAY}f} (+{float(self._radd.sister):.{PRECISION_DISPLAY}f})"], HOIH.FATHER.name: [f"{get_fraction(amounts.father)}: {int(heirs.father)} x {f_amount(amounts.father):.{PRECISION_DISPLAY}f} (+{float(self._radd.father):.{PRECISION_DISPLAY}f})"], HOIH.MOTHER.name: [f"{get_fraction(amounts.mother)}: {int(heirs.mother)} x {f_amount(amounts.mother):.{PRECISION_DISPLAY}f} (+{float(self._radd.mother):.{PRECISION_DISPLAY}f})"], HOIH.RELATIVES.name: [f"{get_fraction(amounts.relatives)}: {int(heirs.relatives)} x {one_heir_amount('relatives'):.{PRECISION_DISPLAY}f} (+{float(self._radd.relatives):.{PRECISION_DISPLAY}f})"]}
 
         d = {k: v for k, v in sorted(d.items(), key=lambda x: HOIH[x[0]].value)}
         return d
@@ -127,7 +127,7 @@ class Amounts:
         one_heir_amount = self.one_heir_f_amount
         get_fraction = self.get_fraction
         f_amount = self.get_float_amount
-        return f"husband ({get_fraction(amounts.husband)}): {f_amount(amounts.husband):.{PRECISION_DISPLAY}f} (+{float(self._radd.husband):.{PRECISION_DISPLAY}f}), wife ({get_fraction(amounts.wife)}): {f_amount(amounts.wife):.{PRECISION_DISPLAY}f} (+{float(self._radd.wife):.{PRECISION_DISPLAY}f}), sons ({get_fraction(amounts.son)}): {heirs.son}x{one_heir_amount('son'):.{PRECISION_DISPLAY}f}, daughters ({get_fraction(amounts.daughter)}): {heirs.daughter}x{one_heir_amount('daughter'):.{PRECISION_DISPLAY}f} (+{float(self._radd.daughter):.{PRECISION_DISPLAY}f}), brothers ({get_fraction(amounts.brother)}): {heirs.brother}x{one_heir_amount('brother'):.{PRECISION_DISPLAY}f} (+{float(self._radd.brother):.{PRECISION_DISPLAY}f}), sisters ({get_fraction(amounts.sister)}): {heirs.sister}x{one_heir_amount('sister'):.{PRECISION_DISPLAY}f} (+{float(self._radd.sister):.{PRECISION_DISPLAY}f}), father ({get_fraction(amounts.father)}): {f_amount(amounts.father):.{PRECISION_DISPLAY}f}, mother ({get_fraction(amounts.mother)}): {f_amount(amounts.mother):.{PRECISION_DISPLAY}f} (+{float(self._radd.mother):.{PRECISION_DISPLAY}f}), relatives: {heirs.relatives}x{one_heir_amount('relatives'):.{PRECISION_DISPLAY}f}"
+        return f"husband ({get_fraction(amounts.husband)}): {f_amount(amounts.husband):.{PRECISION_DISPLAY}f} (+{float(self._radd.husband):.{PRECISION_DISPLAY}f}), wife ({get_fraction(amounts.wife)}): {f_amount(amounts.wife):.{PRECISION_DISPLAY}f} (+{float(self._radd.wife):.{PRECISION_DISPLAY}f}), sons ({get_fraction(amounts.son)}): {heirs.son} x {one_heir_amount('son'):.{PRECISION_DISPLAY}f}, daughters ({get_fraction(amounts.daughter)}): {heirs.daughter} x {one_heir_amount('daughter'):.{PRECISION_DISPLAY}f} (+{float(self._radd.daughter):.{PRECISION_DISPLAY}f}), brothers ({get_fraction(amounts.brother)}): {heirs.brother} x {one_heir_amount('brother'):.{PRECISION_DISPLAY}f} (+{float(self._radd.brother):.{PRECISION_DISPLAY}f}), sisters ({get_fraction(amounts.sister)}): {heirs.sister} x {one_heir_amount('sister'):.{PRECISION_DISPLAY}f} (+{float(self._radd.sister):.{PRECISION_DISPLAY}f}), father ({get_fraction(amounts.father)}): {f_amount(amounts.father):.{PRECISION_DISPLAY}f}, mother ({get_fraction(amounts.mother)}): {f_amount(amounts.mother):.{PRECISION_DISPLAY}f} (+{float(self._radd.mother):.{PRECISION_DISPLAY}f}), relatives: {heirs.relatives} x {one_heir_amount('relatives'):.{PRECISION_DISPLAY}f}"
 
 """## Cases"""
 
@@ -506,18 +506,22 @@ def get_shares_minor_kalala(heirs: Heirs, estate):
 
 """## get_shares_major_kalala()"""
 
-def get_shares_major_kalala(heirs: Heirs):
+def get_shares_major_kalala(heirs: Heirs, estate):
     shares = Shares()
 
     # Siblings
     get_siblings_share(heirs, shares)
 
-    dummy_radd = Shares()
+    # Radd
+    radd = get_radd(heirs, shares, estate)
 
     # Relatives
     get_relatives_share(heirs, shares)
 
-    return shares, dummy_radd
+    # One heir
+    transfer_rest(heirs, shares, radd, estate)
+
+    return shares, radd
 
 """## RADD
 
@@ -579,6 +583,7 @@ def get_radd(heirs: Heirs, shares: Shares, estate) -> Shares:
 def transfer_rest(heirs: Heirs, shares: Shares, radd: Shares, estate):
     rest_portion = shares.remaining()
     if rest_portion > 0:
+        # TODO: This is supposed to solve the one-heir case. Maybe implement it differently.
         rest_amount = rest_portion * estate
         if heirs.husband:
             radd.husband += rest_amount
@@ -586,6 +591,10 @@ def transfer_rest(heirs: Heirs, shares: Shares, radd: Shares, estate):
             radd.wife += rest_amount
         elif heirs.daughter > 0:  # minor kalala case
             radd.daughter += rest_amount
+        elif heirs.mother:
+            radd.mother += rest_amount
+        elif heirs.sister > 0:  # major kalala case
+            radd.sister += rest_amount
 
         radd.total_radd += rest_amount
         shares.total_radd += rest_portion
@@ -610,7 +619,7 @@ def calculate_shares(heirs: Heirs, estate) -> (Shares,Shares):
         case Case.MINOR_KALALA_CASE:
             return get_shares_minor_kalala(heirs, estate=estate)
         case Case.MAJOR_KALALA_CASE:
-            return get_shares_major_kalala(heirs)
+            return get_shares_major_kalala(heirs, estate=estate)
 
 
 ## print_results()
@@ -626,6 +635,8 @@ def get_results(problem: Heirs, estate=24):
 if __name__ == '__main__':
     from pprint import pprint
     # heirs = Heirs(wife=True, son=1, daughter=1, brother=1, sister=1, father=True, mother=True, relatives=1)
-    heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
+    # heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
+    # heirs = Heirs(mother=True)
+    heirs = Heirs(sister=1)
     results = get_results(heirs)
     pprint(results[-1], sort_dicts=False)
