@@ -17,3 +17,29 @@ body[lang="ar"] {
 .ltr-text {
     direction: ltr;
 }
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #0a0e12;
+    color: #e2e2e2;
+}
+
+body.dark-mode table th, table td {
+    border-color: #778087;
+}
+
+
+body.dark-mode button {
+    background-color: #333;
+    color: #e2e2e2;
+}
+
+body.dark-mode input[type="number"] {
+    background-color: #1a2026;
+    color: #e2e2e2;
+}
+
+/* Visited links (after clicking and returning) */
+body.dark-mode a:visited {
+    color: mediumpurple;
+}

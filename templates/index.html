@@ -24,13 +24,15 @@
 
 <button id="switch-en">English</button>
 <button id="switch-ar">العربية</button>
+<button id="dark-mode-toggle" style="float: inline-end;" data-lang="dark_mode_switch">Toggle Dark Mode</button>
+
 
   <h1 data-lang="title">Inheritance Calculator</h1>
 
     <div>
       <label data-lang="estate" for="estate-input">Estate:</label>
       <input type="number" id="estate-input" name="estate" min="0" max="1000000000" value="24" 
-             placeholder="Enter estate value (default 24)" 
+             placeholder="24" 
              onkeydown="checkEnterKey(event);"
              onkeydown="return isNumberKey(event);"
              oninput="limitInput(this, 1000000000)">
@@ -45,7 +47,7 @@
         <th data-lang="number">Number</th>
         <th>
             <span data-lang="heritage_our_study">Heritage (by Ali Aloush)</span><br>
-            <span data-lang="shares_hint">share: count x amount (+radd)</span>
+            <span data-lang="shares_hint">share: count x amount (+Radd)</span>
         </th>
         <th>
             <span data-lang="heritage_fiqh">Heritage (Fiqh)</span><br>
@@ -346,10 +348,30 @@
     document.getElementById('switch-en').addEventListener('click', () => loadLanguage('en'));
     document.getElementById('switch-ar').addEventListener('click', () => loadLanguage('ar'));
 
+    document.getElementById('dark-mode-toggle').addEventListener('click', function () {
+        document.body.classList.toggle('dark-mode');
+        
+    // Save the user's preference in localStorage
+    if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+    });
+
+
     // Load default language on page load
     window.onload = function() {
         loadLanguage('en');  // Default to English
     };
+    
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+
 
   </script>
 

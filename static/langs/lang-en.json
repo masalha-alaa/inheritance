@@ -1,5 +1,6 @@
 {
     "title": "Inheritance Calculator",
+    "dark_mode_switch": "Toggle Dark Mode",
     "estate": "Estate:",
     "heir": "Heir",
     "number": "Number",
