@@ -637,6 +637,7 @@ if __name__ == '__main__':
     # heirs = Heirs(wife=True, son=1, daughter=1, brother=1, sister=1, father=True, mother=True, relatives=1)
     # heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
     # heirs = Heirs(mother=True)
-    heirs = Heirs(sister=1)
+    # heirs = Heirs(sister=1)
+    heirs = Heirs(brother=1, sister=1)
     results = get_results(heirs)
     pprint(results[-1], sort_dicts=False)

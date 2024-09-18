@@ -32,6 +32,11 @@ class Fiqh:
         dummy = {h: f"{display_fraction_in_unicode(F(0, 1))} ≡ 0" for h in HeirsOrderInHtml}
         input_fields = self.heirs_to_input_fields(heirs)
         form_fields = self.inflate(input_fields, self.relative_details)
+
+        try:
+            self.br.select_form(name='form1')
+        except mechanize.FormNotFoundError:
+            self.initialize()
         response = self.send_request(self.br, form_fields)
         self.br.back()
         if response is None:
@@ -54,7 +59,6 @@ class Fiqh:
         return inflated
 
     def send_request(self, br, form_fields_dict):
-        br.select_form(name='form1')
         br.form.set_all_readonly(False)
         # set the relevant ASP.NET fields, as required in the page's onSubmit function
         # Your .aspx page may not have these

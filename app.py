@@ -8,8 +8,8 @@ from my_utils import HeirsOrderInHtml as HOIH
 
 
 app = Flask(__name__)
-# app.config['DEBUG'] = False
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
+# app.config['DEBUG'] = True
 app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024  # Limit to 8MB
 CORS(app)
 app.fiqh = Fiqh()
