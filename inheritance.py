@@ -296,7 +296,7 @@ def get_siblings_share(heirs: Heirs, shares: Shares):
             if heirs.siblings < 3:
                 if heirs.brother == 1:
                     shares.brother = F(1,6)
-                elif heirs.sister == 1:
+                if heirs.sister == 1:
                     shares.sister = F(1,6)
             if heirs.brother > 1 or heirs.sister > 1 or heirs.siblings > 2:
                 one_siblings_share = F(1,3) / heirs.siblings
@@ -638,6 +638,8 @@ if __name__ == '__main__':
     # heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
     # heirs = Heirs(mother=True)
     # heirs = Heirs(sister=1)
-    heirs = Heirs(brother=1, sister=1)
+    # heirs = Heirs(brother=1, sister=1)
+    # heirs = Heirs(daughter=3, brother=1, sister=1)
+    heirs = Heirs(daughter=3, brother=2, sister=1)
     results = get_results(heirs)
     pprint(results[-1], sort_dicts=False)
