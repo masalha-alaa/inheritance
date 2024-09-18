@@ -115,7 +115,10 @@
   <br>
   <button data-lang="calculate" onclick="fillHeritageColumns()">Calculate Heritage</button>
   <button data-lang="clear" onclick="clearTable()">Clear</button>
-  
+    <br><br>
+    <label data-lang="the_case" style="display: inline-block; margin-right: 5px;">The case:</label>
+    <label id="the_case_value_id" style="display: inline-block;"></label>
+
     <hr style="height:2px;border-width:0;background-color:gray">
 
     <!-- Important Notes Section -->
@@ -184,11 +187,13 @@
     }
     
     function clearTable(clear_numbers_col = true, clear_ali_calcs = true, clear_fiqh_cals = true) {
+        const awlMessage = document.getElementById("awl-message");
+        awlMessage.textContent = '\u00A0';
+        const theCase = document.getElementById("the_case_value_id");
+        theCase.textContent = "";
+        
         if (clear_numbers_col)
         {
-            const awlMessage = document.getElementById("awl-message");
-            awlMessage.textContent = '\u00A0';
-                    
             // Select all input elements (Numbers column)
             const inputs = document.querySelectorAll('#table-body input[type="number"]');
             
@@ -251,6 +256,9 @@
         if (data['error']) {
             alert("An error occurred while calculating Heritage (by Ali Aloush). Please try again.");
         }
+        
+        document.getElementById("the_case_value_id").innerText = translations[currentLang][data['case']];
+        
         // Update the "Heritage (our study)" column based on the response
         for (let i = 0; i < 9; i++) {
           document.getElementById(`heritageStudy${i}`).innerText = data['study'][i];
@@ -298,6 +306,7 @@
 
     // Load the language files (assume the files are available at 'lang-en.json' and 'lang-ar.json')
     async function loadLanguage(lang) {
+        clearTable();
         currentLang = lang;
         const response = await fetch(`/static/langs/lang-${lang}.json`);
         const data = await response.json();

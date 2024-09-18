@@ -8,8 +8,8 @@ from my_utils import HeirsOrderInHtml as HOIH
 
 
 app = Flask(__name__)
-app.config['DEBUG'] = False
-# app.config['DEBUG'] = True
+# app.config['DEBUG'] = False
+app.config['DEBUG'] = True
 app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024  # Limit to 8MB
 CORS(app)
 app.fiqh = Fiqh()
@@ -44,9 +44,11 @@ def calculate_heritage():
     if app.config['DEBUG'] is True:
         print("Ali Aloush:")
         pprint(result, sort_dicts=False)
+        print(the_case)
 
     # Return the results as JSON
-    return jsonify({'study': list(result.values()), 'error': len(result) == 0, 'case': the_case, 'awl': False})
+    return jsonify({'study': list(result.values()), 'error': len(result) == 0, 'case': the_case.name,
+                    'awl': False})
 
 
 # Define a route to handle the data and run the algorithm
