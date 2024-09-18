@@ -306,7 +306,7 @@
 
     // Load the language files (assume the files are available at 'lang-en.json' and 'lang-ar.json')
     async function loadLanguage(lang) {
-        clearTable();
+        
         currentLang = lang;
         const response = await fetch(`/static/langs/lang-${lang}.json`);
         const data = await response.json();
@@ -315,6 +315,8 @@
         
         document.querySelector('[data-lang="heritage_our_study"]').classList.add('ltr-text');
         document.querySelector('[data-lang="heritage_fiqh"]').classList.add('ltr-text');
+        
+        clearTable();
     }
 
     // Apply the translations to the page
