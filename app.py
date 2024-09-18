@@ -39,14 +39,14 @@ def calculate_heritage():
                     relatives=heirs[HOIH.RELATIVES.value])
 
     # Run the algorithm and get the results
-    _, _, _, result = get_results(problem, estate)  # Modify this line according to your class method
+    the_case, _, _, result = get_results(problem, estate)  # Modify this line according to your class method
 
     if app.config['DEBUG'] is True:
         print("Ali Aloush:")
         pprint(result, sort_dicts=False)
 
     # Return the results as JSON
-    return jsonify({'study': list(result.values()), 'error': len(result) == 0, 'awl': False})
+    return jsonify({'study': list(result.values()), 'error': len(result) == 0, 'case': the_case, 'awl': False})
 
 
 # Define a route to handle the data and run the algorithm
@@ -73,7 +73,7 @@ def calculate_heritage_fiqh():
         print(f"{awl_applied = }")
 
     # Return the results as JSON
-    return jsonify({'fiqh': list(result.values()), 'error': len(result) == 0, 'awl': awl_applied})
+    return jsonify({'fiqh': list(result.values()), 'error': len(result) == 0, 'case': None, 'awl': awl_applied})
     # return jsonify({'study': [[', '.join([str(x) for x in r])] for r in result.values()], 'fiqh': [0] * 9})
 
 
