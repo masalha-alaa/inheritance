@@ -188,7 +188,13 @@
         }
     }
     
+    function clearURL() {
+        const newUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({ path: newUrl }, '', newUrl);
+    }
+    
     function clearTable(clear_numbers_col = true, clear_ali_calcs = true, clear_fiqh_cals = true) {
+        clearURL();
         const awlMessage = document.getElementById("awl-message");
         awlMessage.textContent = '\u00A0';
         const theCase = document.getElementById("the_case_value_id");
@@ -232,6 +238,7 @@
     // Function to calculate and fill the Heritage columns by calling the Flask API
     function fillHeritageColumns() {
       clearTable(false, false);
+      
       const heirs = [];
       for (let i = 0; i < 9; i++) {
         const number = document.getElementById(`number${i}`).value;
@@ -244,6 +251,9 @@
         estateValue = 24;
       }
       
+      // Update URL with query parameters
+      const newUrl = `${window.location.origin}${window.location.pathname}?estate=${estateValue}&husband=${heirs[0]}&wife=${heirs[1]}&son=${heirs[2]}&daughter=${heirs[3]}&father=${heirs[4]}&mother=${heirs[5]}&brother=${heirs[6]}&sister=${heirs[7]}&relatives=${heirs[8]}`;
+      window.history.pushState({ path: newUrl }, '', newUrl);  // Update URL without refreshing
 
       // Send a POST request to the Flask API with the heirs data
       fetch('/calculate_heritage', {
@@ -324,8 +334,6 @@
         } else {
             localStorage.setItem('language', 'ar');
         }
-        
-        clearTable();
     }
 
     // Apply the translations to the page
@@ -352,8 +360,14 @@
 
 
     // Set up language switch buttons
-    document.getElementById('switch-en').addEventListener('click', () => loadLanguage('en'));
-    document.getElementById('switch-ar').addEventListener('click', () => loadLanguage('ar'));
+    document.getElementById('switch-en').addEventListener('click', () => {
+        loadLanguage('en');
+        clearTable();
+    });
+    document.getElementById('switch-ar').addEventListener('click', () => {
+        loadLanguage('ar');
+        clearTable();
+    });
 
     document.getElementById('dark-mode-toggle').addEventListener('click', function () {
         document.body.classList.toggle('dark-mode');
@@ -369,6 +383,13 @@
 
     // Load default language on page load
     window.onload = function() {
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        });
+    
         const savedlLanguage = localStorage.getItem('language');
         if (savedlLanguage === 'ar') {
             loadLanguage('ar');
@@ -377,15 +398,58 @@
         {
             loadLanguage('en');
         }
-    };
-    
-    window.addEventListener('DOMContentLoaded', (event) => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-mode');
+        
+        const params = new URLSearchParams(window.location.search);
+        const estateParam = params.get('estate');
+        if (estateParam) {
+            document.getElementById('estate-input').value = estateParam;
         }
-    });
-
+        
+        const husband = params.get('husband');
+        if (husband) {
+            document.getElementById('number0').value = husband;
+        }
+        
+        const wife = params.get('wife');
+        if (wife) {
+            document.getElementById('number1').value = wife;
+        }
+        
+        const son = params.get('son');
+        if (son) {
+            document.getElementById('number2').value = son;
+        }
+        
+        const daughter = params.get('daughter');
+        if (daughter) {
+            document.getElementById('number3').value = daughter;
+        }
+        
+        const father = params.get('father');
+        if (father) {
+            document.getElementById('number4').value = father;
+        }
+        
+        const mother = params.get('mother');
+        if (mother) {
+            document.getElementById('number5').value = mother;
+        }
+        
+        const brother = params.get('brother');
+        if (brother) {
+            document.getElementById('number6').value = brother;
+        }
+        
+        const sister = params.get('sister');
+        if (sister) {
+            document.getElementById('number7').value = sister;
+        }
+        
+        const relatives = params.get('relatives');
+        if (relatives) {
+            document.getElementById('number8').value = relatives;
+        }
+    };
 
   </script>
 
