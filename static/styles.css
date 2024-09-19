@@ -40,6 +40,11 @@ body.dark-mode input[type="number"] {
 }
 
 /* Visited links (after clicking and returning) */
+body.dark-mode a {
+    color: deepskyblue;
+}
+
+/* Unvisited links */
 body.dark-mode a:visited {
     color: mediumpurple;
 }

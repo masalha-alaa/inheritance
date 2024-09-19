@@ -318,6 +318,13 @@
         document.querySelector('[data-lang="heritage_our_study"]').classList.add('ltr-text');
         document.querySelector('[data-lang="heritage_fiqh"]').classList.add('ltr-text');
         
+        // Save the user's preference in localStorage
+        if (lang === 'en') {
+            localStorage.setItem('language', 'en');
+        } else {
+            localStorage.setItem('language', 'ar');
+        }
+        
         clearTable();
     }
 
@@ -362,7 +369,14 @@
 
     // Load default language on page load
     window.onload = function() {
-        loadLanguage('en');  // Default to English
+        const savedlLanguage = localStorage.getItem('language');
+        if (savedlLanguage === 'ar') {
+            loadLanguage('ar');
+        }
+        else
+        {
+            loadLanguage('en');
+        }
     };
     
     window.addEventListener('DOMContentLoaded', (event) => {
