@@ -375,12 +375,10 @@
 
     // Load default language on page load
     window.onload = function () {
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-            }
-        });
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
 
         const savedlLanguage = localStorage.getItem('language');
         if (savedlLanguage === 'ar') {
