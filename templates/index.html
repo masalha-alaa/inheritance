@@ -354,11 +354,11 @@
     // Set up language switch buttons
     document.getElementById('switch-en').addEventListener('click', () => {
         loadLanguage('en');
-        clearTable();
+        clearTable(false);
     });
     document.getElementById('switch-ar').addEventListener('click', () => {
         loadLanguage('ar');
-        clearTable();
+        clearTable(false);
     });
 
     document.getElementById('dark-mode-toggle').addEventListener('click', function () {
