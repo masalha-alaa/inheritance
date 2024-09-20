@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inheritance Calculator</title>
-  <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid black;
-      padding: 10px;
-      text-align: center;
-    }
-    input[type="number"] {
-      width: 100%;
-    }
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inheritance Calculator</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+
+        input[type="number"] {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -27,22 +29,22 @@
 <button id="dark-mode-toggle" style="float: inline-end;" data-lang="dark_mode_switch">Toggle Dark Mode</button>
 
 
-  <h1 data-lang="title">Inheritance Calculator</h1>
+<h1 data-lang="title">Inheritance Calculator</h1>
 
-    <div>
-      <label data-lang="estate" for="estate-input">Estate:</label>
-      <input type="number" id="estate-input" name="estate" min="0" max="1000000000" value="24" 
-             placeholder="24" 
-             onkeydown="checkEnterKey(event);"
-             onkeydown="return isNumberKey(event);"
-             oninput="limitInput(this, 1000000000)">
-    </div>
+<div>
+    <label data-lang="estate" for="estate-input">Estate:</label>
+    <input type="number" id="estate-input" name="estate" min="0" max="1000000000" value="24"
+           placeholder="24"
+           onkeydown="checkEnterKey(event);"
+           onkeydown="return isNumberKey(event);"
+           oninput="limitInput(this, 1000000000)">
+</div>
 
 
 <!-- IF HEIRS ORDER IS CHANGED, MUST CHANGE HeirsOrderInHtml(Enum) IN PYTHON  -->
-  <table>
+<table>
     <thead>
-      <tr>
+    <tr>
         <th data-lang="heir">Heir</th>
         <th data-lang="number">Number</th>
         <th>
@@ -54,79 +56,81 @@
             <span id="awl-message" style="color: red; font-size: small;">&nbsp;</span>
         </th>
 
-      </tr>
+    </tr>
     </thead>
     <tbody id="table-body">
-      <tr>
+    <tr>
         <td data-lang="husband">Husband</td>
-        <td><input type="number" id="number0" value="0" min="0" max="1" onchange="validateHusbandWife('husband')" oninput="limitInput(this, 1)"></td>
+        <td><input type="number" id="number0" value="0" min="0" max="1" onchange="validateHusbandWife('husband')"
+                   oninput="limitInput(this, 1)"></td>
         <td id="heritageStudy0" class="ltr-text"></td>
         <td id="heritageFiqh0" class="ltr-text"></td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
         <td data-lang="wife">Wife</td>
-        <td><input type="number" id="number1" value="0" min="0" max="1" onchange="validateHusbandWife('wife')" oninput="limitInput(this, 1)"></td>
+        <td><input type="number" id="number1" value="0" min="0" max="1" onchange="validateHusbandWife('wife')"
+                   oninput="limitInput(this, 1)"></td>
         <td id="heritageStudy1" class="ltr-text"></td>
         <td id="heritageFiqh1" class="ltr-text"></td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
         <td data-lang="son">Son</td>
         <td><input type="number" id="number2" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
         <td id="heritageStudy2" class="ltr-text"></td>
         <td id="heritageFiqh2" class="ltr-text"></td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
         <td data-lang="daughter">Daughter</td>
         <td><input type="number" id="number3" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
         <td id="heritageStudy3" class="ltr-text"></td>
         <td id="heritageFiqh3" class="ltr-text"></td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
         <td data-lang="father">Father</td>
         <td><input type="number" id="number4" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
         <td id="heritageStudy4" class="ltr-text"></td>
         <td id="heritageFiqh4" class="ltr-text"></td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
         <td data-lang="mother">Mother</td>
         <td><input type="number" id="number5" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
         <td id="heritageStudy5" class="ltr-text"></td>
         <td id="heritageFiqh5" class="ltr-text"></td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
         <td data-lang="brother">Brother</td>
         <td><input type="number" id="number6" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
         <td id="heritageStudy6" class="ltr-text"></td>
         <td id="heritageFiqh6" class="ltr-text"></td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
         <td data-lang="sister">Sister</td>
         <td><input type="number" id="number7" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
         <td id="heritageStudy7" class="ltr-text"></td>
         <td id="heritageFiqh7" class="ltr-text"></td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
         <td data-lang="relatives">Relatives</td>
         <td><input type="number" id="number8" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
         <td id="heritageStudy8" class="ltr-text"></td>
         <td id="heritageFiqh8" class="ltr-text"></td>
-      </tr>
+    </tr>
     </tbody>
-  </table>
+</table>
 
-  <br>
-  <button data-lang="calculate" onclick="fillHeritageColumns()">Calculate Heritage</button>
-  <button data-lang="clear" onclick="clearTable()">Clear</button>
-    <br><br>
-    <b><label data-lang="the_case" style="display: inline-block; margin-right: 5px;">The case:</label></b>
-    <label id="the_case_value_id" style="display: inline-block;"></label>
+<br>
+<button data-lang="calculate" onclick="fillHeritageColumns()">Calculate Heritage</button>
+<button data-lang="clear" onclick="clearTable()">Clear</button>
+<br><br>
+<b><label data-lang="the_case" style="display: inline-block; margin-right: 5px;">The case:</label></b>
+<label id="the_case_value_id" style="display: inline-block;"></label>
 
-    <hr style="height:2px;border-width:0;background-color:gray">
+<hr style="height:2px;border-width:0;background-color:gray">
 
-    <!-- Important Notes Section -->
-    <div class="important-notes">
-      <h3 data-lang="notes">Important Notes</h3>
-      <ul>
+<!-- Important Notes Section -->
+<div class="important-notes">
+    <h3 data-lang="notes">Important Notes</h3>
+    <ul>
         <li data-lang="note1"></li>
         <li data-lang="note2"></li>
         <li data-lang="note3"></li>
@@ -138,31 +142,27 @@
         <li data-lang="note9"></li>
         <li data-lang="note10"></li>
         <li data-lang="note11"></li>
-      </ul>
-    </div>
+    </ul>
+</div>
 
-  
 
-  <script>
+<script>
     // Assume currentLang is set to the user's selected language ('en' or 'ar')
     let currentLang = 'en';  // Default language, change it as needed
 
     // Prevent both Husband and Wife from being 1
     function validateHusbandWife(spouse) {
-      const husband = document.getElementById('number0');
-      const wife = document.getElementById('number1');
-      if (husband.value == 1 && wife.value == 1) {
-        const alertMessage = translations[currentLang]['husband_wife_warning'];
-        alert(alertMessage);
-        if(spouse == "husband")
-        {
-            husband.value = 0;
+        const husband = document.getElementById('number0');
+        const wife = document.getElementById('number1');
+        if (husband.value == 1 && wife.value == 1) {
+            const alertMessage = translations[currentLang]['husband_wife_warning'];
+            alert(alertMessage);
+            if (spouse == "husband") {
+                husband.value = 0;
+            } else if (spouse == "wife") {
+                wife.value = 0;
+            }
         }
-        else if(spouse == "wife")
-        {
-            wife.value = 0;
-        }
-      }
     }
 
     // Function to restrict user input to numbers (disables arrows, ensures keyboard input)
@@ -187,127 +187,120 @@
             fillHeritageColumns();    // Invoke the function
         }
     }
-    
+
     function clearURL() {
         const newUrl = window.location.origin + window.location.pathname;
-        window.history.replaceState({ path: newUrl }, '', newUrl);
+        window.history.replaceState({path: newUrl}, '', newUrl);
     }
-    
+
     function clearTable(clear_numbers_col = true, clear_ali_calcs = true, clear_fiqh_cals = true) {
         clearURL();
         const awlMessage = document.getElementById("awl-message");
         awlMessage.textContent = '\u00A0';
         const theCase = document.getElementById("the_case_value_id");
         theCase.textContent = "";
-        
-        if (clear_numbers_col)
-        {
+
+        if (clear_numbers_col) {
             // Select all input elements (Numbers column)
             const inputs = document.querySelectorAll('#table-body input[type="number"]');
-            
+
             // Reset each input to 0
             inputs.forEach(input => {
                 input.value = 0;
             });
         }
-        
+
         // Select all other cells (Heritage columns) and clear their text content
         cells = [];
-        if (clear_ali_calcs && clear_fiqh_cals)
-        {
+        if (clear_ali_calcs && clear_fiqh_cals) {
             cells = document.querySelectorAll('#table-body tr td:nth-child(3), #table-body tr td:nth-child(4)');
-        }
-        else if(clear_ali_calcs)
-        {
+        } else if (clear_ali_calcs) {
             cells = document.querySelectorAll('#table-body tr td:nth-child(3)');
-        }
-        else if(clear_fiqh_cals)
-        {
+        } else if (clear_fiqh_cals) {
             cells = document.querySelectorAll('#table-body tr td:nth-child(4)');
         }
-        
+
         // Clear each cell's text content
-        if (cells.length > 0)
-        {
+        if (cells.length > 0) {
             cells.forEach(cell => {
                 cell.textContent = '';
             });
         }
     }
-    
+
     // Function to calculate and fill the Heritage columns by calling the Flask API
     function fillHeritageColumns() {
-      clearTable(false, false);
-      
-      const heirs = [];
-      for (let i = 0; i < 9; i++) {
-        const number = document.getElementById(`number${i}`).value;
-        heirs.push(Number(number));
-      }
-      
-      // Get the estate value from the input field
-      estateValue = document.getElementById("estate-input").value;
-      if (estateValue == "") {
-        estateValue = 24;
-      }
-      
-      // Update URL with query parameters
-      const newUrl = `${window.location.origin}${window.location.pathname}?estate=${estateValue}&husband=${heirs[0]}&wife=${heirs[1]}&son=${heirs[2]}&daughter=${heirs[3]}&father=${heirs[4]}&mother=${heirs[5]}&brother=${heirs[6]}&sister=${heirs[7]}&relatives=${heirs[8]}`;
-      window.history.pushState({ path: newUrl }, '', newUrl);  // Update URL without refreshing
+        clearTable(false, false);
 
-      // Send a POST request to the Flask API with the heirs data
-      fetch('/calculate_heritage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ heirs: heirs, estate: estateValue })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data['error']) {
-            alert("An error occurred while calculating Heritage (by Ali Aloush). Please try again.");
-        }
-        
-        document.getElementById("the_case_value_id").innerText = translations[currentLang][data['case']];
-        
-        // Update the "Heritage (our study)" column based on the response
+        const heirs = [];
         for (let i = 0; i < 9; i++) {
-          document.getElementById(`heritageStudy${i}`).innerText = data['study'][i];
+            const number = document.getElementById(`number${i}`).value;
+            heirs.push(Number(number));
         }
-      })
-      .catch(error => console.error('Error:', error));
-      
-      fetch('/calculate_heritage_fiqh', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ heirs: heirs, estate: estateValue })
-      })
-      .then(response => response.json())
-      .then(data => {
-        // Check if 'awl' is true and update the message under "Heritage (Fiqh)"
-        const awlMessage = document.getElementById("awl-message");
-        if (awlMessage) {
-            if (data['awl'] === true) {
-            const awlMessageTranslation = translations[currentLang]['awl_message'];
-                awlMessage.textContent = awlMessageTranslation;
-            } else if (data['awl'] === false) {
-                awlMessage.textContent = '\u00A0';
-            }
-        } else {
-            console.error("Awl message element not found");
+
+        // Get the estate value from the input field
+        estateValue = document.getElementById("estate-input").value;
+        if (estateValue == "") {
+            estateValue = 24;
         }
-        if (data['error']) {
-            alert("An error occurred while calculating Heritage (Fiqh). Please refresh the page and try again.");
-        }
-        // Update the "Heritage (Fiqh)" column based on the response
-        for (let i = 0; i < 9; i++) {
-          document.getElementById(`heritageFiqh${i}`).innerText = data['fiqh'][i];
-        }
-      })
-      .catch(error => console.error('Error:', error));
+
+        // Update URL with query parameters
+        const newUrl = `${window.location.origin}${window.location.pathname}?estate=${estateValue}&husband=${heirs[0]}&wife=${heirs[1]}&son=${heirs[2]}&daughter=${heirs[3]}&father=${heirs[4]}&mother=${heirs[5]}&brother=${heirs[6]}&sister=${heirs[7]}&relatives=${heirs[8]}`;
+        window.history.pushState({path: newUrl}, '', newUrl);  // Update URL without refreshing
+
+        // Send a POST request to the Flask API with the heirs data
+        fetch('/calculate_heritage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({heirs: heirs, estate: estateValue})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data['error']) {
+                    alert("An error occurred while calculating Heritage (by Ali Aloush). Please try again.");
+                }
+
+                document.getElementById("the_case_value_id").innerText = translations[currentLang][data['case']];
+
+                // Update the "Heritage (our study)" column based on the response
+                for (let i = 0; i < 9; i++) {
+                    document.getElementById(`heritageStudy${i}`).innerText = data['study'][i];
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
+        fetch('/calculate_heritage_fiqh', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({heirs: heirs, estate: estateValue})
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Check if 'awl' is true and update the message under "Heritage (Fiqh)"
+                const awlMessage = document.getElementById("awl-message");
+                if (awlMessage) {
+                    if (data['awl'] === true) {
+                        const awlMessageTranslation = translations[currentLang]['awl_message'];
+                        awlMessage.textContent = awlMessageTranslation;
+                    } else if (data['awl'] === false) {
+                        awlMessage.textContent = '\u00A0';
+                    }
+                } else {
+                    console.error("Awl message element not found");
+                }
+                if (data['error']) {
+                    alert("An error occurred while calculating Heritage (Fiqh). Please refresh the page and try again.");
+                }
+                // Update the "Heritage (Fiqh)" column based on the response
+                for (let i = 0; i < 9; i++) {
+                    document.getElementById(`heritageFiqh${i}`).innerText = data['fiqh'][i];
+                }
+            })
+            .catch(error => console.error('Error:', error));
     }
 
     // LANGUAGE SWITCHING
@@ -318,16 +311,16 @@
 
     // Load the language files (assume the files are available at 'lang-en.json' and 'lang-ar.json')
     async function loadLanguage(lang) {
-        
+
         currentLang = lang;
         const response = await fetch(`/static/langs/lang-${lang}.json`);
         const data = await response.json();
         translations[lang] = data;
         applyTranslations(lang);
-        
+
         document.querySelector('[data-lang="heritage_our_study"]').classList.add('ltr-text');
         document.querySelector('[data-lang="heritage_fiqh"]').classList.add('ltr-text');
-        
+
         // Save the user's preference in localStorage
         if (lang === 'en') {
             localStorage.setItem('language', 'en');
@@ -358,7 +351,6 @@
     }
 
 
-
     // Set up language switch buttons
     document.getElementById('switch-en').addEventListener('click', () => {
         loadLanguage('en');
@@ -371,87 +363,85 @@
 
     document.getElementById('dark-mode-toggle').addEventListener('click', function () {
         document.body.classList.toggle('dark-mode');
-        
-    // Save the user's preference in localStorage
-    if (document.body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-    } else {
-        localStorage.setItem('theme', 'light');
-    }
+
+        // Save the user's preference in localStorage
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
     });
 
 
     // Load default language on page load
-    window.onload = function() {
+    window.onload = function () {
         window.addEventListener('DOMContentLoaded', (event) => {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-mode');
             }
         });
-    
+
         const savedlLanguage = localStorage.getItem('language');
         if (savedlLanguage === 'ar') {
             loadLanguage('ar');
-        }
-        else
-        {
+        } else {
             loadLanguage('en');
         }
-        
+
         const params = new URLSearchParams(window.location.search);
         const estateParam = params.get('estate');
         if (estateParam) {
             document.getElementById('estate-input').value = estateParam;
         }
-        
+
         const husband = params.get('husband');
         if (husband) {
             document.getElementById('number0').value = husband;
         }
-        
+
         const wife = params.get('wife');
         if (wife) {
             document.getElementById('number1').value = wife;
         }
-        
+
         const son = params.get('son');
         if (son) {
             document.getElementById('number2').value = son;
         }
-        
+
         const daughter = params.get('daughter');
         if (daughter) {
             document.getElementById('number3').value = daughter;
         }
-        
+
         const father = params.get('father');
         if (father) {
             document.getElementById('number4').value = father;
         }
-        
+
         const mother = params.get('mother');
         if (mother) {
             document.getElementById('number5').value = mother;
         }
-        
+
         const brother = params.get('brother');
         if (brother) {
             document.getElementById('number6').value = brother;
         }
-        
+
         const sister = params.get('sister');
         if (sister) {
             document.getElementById('number7').value = sister;
         }
-        
+
         const relatives = params.get('relatives');
         if (relatives) {
             document.getElementById('number8').value = relatives;
         }
     };
 
-  </script>
+</script>
 
 </body>
 </html>
