@@ -44,7 +44,7 @@ class Fiqh:
         awl_applied = "shares have exceeded 100%" in response.text.lower()
         try:
             df = self.parse_response(response)
-            final_results = self.fiqh_fields_to_dict(df, estate=estate)
+            final_results = self.fiqh_fields_to_dict(df, heirs, estate=estate)
         except ValueError:
             final_results = dummy
         return final_results if final_results else dummy, awl_applied
@@ -85,7 +85,13 @@ class Fiqh:
     def _eval_percentage(self, percentage):
         return round(float(percentage.replace("%", "")) / 100, 4)
 
-    def fiqh_fields_to_dict(self, fiqh_fields: pd.DataFrame, estate):
+    def fiqh_fields_to_dict(self, fiqh_fields: pd.DataFrame, heirs: Heirs, estate):
+        def get_share_per_capital(heirs_num, total_share_for_heirs):
+            if heirs_num:
+                return float(total_share_for_heirs * estate) / heirs_num
+            else:
+                return 0
+
         fiqh_fields.set_index("Relative Category", inplace=True)
         shares_d = dict()
         shares_d['husband'] = F(0, 1)
@@ -116,8 +122,8 @@ class Fiqh:
         if 'FullCousin' in fiqh_fields.index:
             shares_d['relatives'] = F(fiqh_fields.loc['FullCousin', 'Share Fraction'])
 
-        shares_d = {k: f"{display_fraction_in_unicode(v)} ≡ {float(v * estate):.2f}"
-                    for k, v in shares_d.items()}
+        for k, v in shares_d.items():
+            shares_d[k] = f"{display_fraction_in_unicode(v)}: {int(heirs[k])} x {get_share_per_capital(int(heirs[k]), v):.2f}"
         return shares_d
 
 
@@ -126,8 +132,10 @@ if __name__ == '__main__':
     fiqh = Fiqh()
     fiqh.initialize()
     # heirs = Heirs(wife=True, son=1, daughter=1, brother=1, sister=1, father=True, mother=True, relatives=1)
-    heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
+    # heirs = Heirs(wife=True, daughter=2, father=True, mother=True)
+    # heirs = Heirs(son=7, daughter=3)
     # heirs = Heirs(husband=True, son=2)
+    heirs = Heirs(mother=True, brother=1)
     shares, awl_applied = fiqh.run(heirs)
     pprint(shares, sort_dicts=False)
     print(f"{awl_applied = }")

@@ -69,7 +69,7 @@ class Shares:
 """## Amounts"""
 
 class Amounts:
-    def __init__(self, heirs: Heirs, estate=24, amounts=None):
+    def __init__(self, heirs: Heirs, estate=24.0, amounts=None):
         self._heirs = heirs
         self._shares, self._radd = calculate_shares(heirs, estate=estate)
         self._estate = F(estate)
@@ -601,7 +601,7 @@ def transfer_rest(heirs: Heirs, shares: Shares, radd: Shares, estate):
 
 """## shares_to_amounts()"""
 
-def shares_to_amounts(shares: Shares, estate=24) -> Shares:
+def shares_to_amounts(shares: Shares, estate=24.0) -> Shares:
     amounts = Shares()
     for heir_name, heir_share in shares.get_dict().items():
         setattr(amounts, heir_name, heir_share * estate)
@@ -624,7 +624,7 @@ def calculate_shares(heirs: Heirs, estate) -> (Shares,Shares):
 
 ## print_results()
 
-def get_results(problem: Heirs, estate=24):
+def get_results(problem: Heirs, estate=24.0):
     the_case = get_case(problem)
     problem_amounts = Amounts(problem, estate=estate)
     amounts_sum_display = f"{problem_amounts.sum_amounts()}/{problem_amounts.estate}"
@@ -640,6 +640,7 @@ if __name__ == '__main__':
     # heirs = Heirs(sister=1)
     # heirs = Heirs(brother=1, sister=1)
     # heirs = Heirs(daughter=3, brother=1, sister=1)
-    heirs = Heirs(daughter=3, brother=2, sister=1)
-    results = get_results(heirs)
+    # heirs = Heirs(daughter=3, brother=2, sister=1)
+    heirs = Heirs(daughter=3, son=7)
+    results = get_results(heirs, estate=4.7)
     pprint(results[-1], sort_dicts=False)

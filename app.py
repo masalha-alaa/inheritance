@@ -27,7 +27,7 @@ def index():
 def calculate_heritage():
     data = request.json  # Receive the data sent from the front-end
     heirs = data.get('heirs')  # Extract the 'heirs' array (the "Number" column)
-    estate = int(data.get('estate', 24))  # Get estate value
+    estate = float(data.get('estate', 24))  # Get estate value
     problem = Heirs(husband=heirs[HOIH.HUSBAND.value],
                     wife=heirs[HOIH.WIFE.value],
                     son=heirs[HOIH.SON.value],

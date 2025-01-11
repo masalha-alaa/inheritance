@@ -39,5 +39,8 @@ class Heirs:
     def parents(self) -> bool:
         return self.father or self.mother
 
+    def __getitem__(self, item: str):
+        return getattr(self, item)
+
     def __repr__(self):
         return f"husband: {self.husband}, wife: {self.wife}, son: {self.son}, daughter: {self.daughter}, brother: {self.brother}, sister: {self.sister}, father: {self.father}, mother: {self.mother}, relatives: {self.relatives}"
