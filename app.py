@@ -56,6 +56,7 @@ def calculate_heritage():
 def calculate_heritage_fiqh():
     data = request.json  # Receive the data sent from the front-end
     heirs = data.get('heirs')  # Extract the 'heirs' array (the "Number" column)
+    estate = float(data.get('estate', 24))  # Get estate value
     problem = Heirs(husband=heirs[HOIH.HUSBAND.value],
                     wife=heirs[HOIH.WIFE.value],
                     son=heirs[HOIH.SON.value],
@@ -67,7 +68,7 @@ def calculate_heritage_fiqh():
                     relatives=heirs[HOIH.RELATIVES.value])
 
     # Run the algorithm and get the results
-    result, awl_applied = app.fiqh.run(problem)  # Modify this line according to your class method
+    result, awl_applied = app.fiqh.run(problem, estate)  # Modify this line according to your class method
 
     if app.config['DEBUG'] is True:
         print("Fiqh:")
