@@ -59,19 +59,32 @@ class Fiqh:
         return inflated
 
     def send_request(self, br, form_fields_dict):
-        br.form.set_all_readonly(False)
-        # set the relevant ASP.NET fields, as required in the page's onSubmit function
-        # Your .aspx page may not have these
-        # Luckily we can ignore the __VIEWSTATE variable: mechanize handles this for us.
-        try:
-            for k, v in form_fields_dict.items():
-                br[k] = v
-        except mechanize.ControlNotFoundError as e:
-            print(f"ControlNotFoundError: {e}")
-            return None
-        br.submit()
-        response = bs(br.response().read(), features="lxml")
-        return response
+        retries = 5
+        while retries:
+            br.form.set_all_readonly(False)
+            # set the relevant ASP.NET fields, as required in the page's onSubmit function
+            # Your .aspx page may not have these
+            # Luckily we can ignore the __VIEWSTATE variable: mechanize handles this for us.
+            try:
+                for k, v in form_fields_dict.items():
+                    br[k] = v
+            except mechanize.ControlNotFoundError as e:
+                print(f"ControlNotFoundError: {e}. Retrying...")
+                retries -= 1
+                continue
+            try:
+                br.submit()
+            except mechanize.HTTPError as e:
+                print(f"HTTPError: {e}. Retrying...")
+                retries -= 1
+                continue
+            except mechanize.URLError as e:
+                print(f"URLError: {e}. Retrying...")
+                retries -= 1
+                continue
+            response = bs(br.response().read(), features="lxml")
+            return response
+        return None
 
     def parse_response(self, response):
         shares_table = response.find("table", id="dgSharesCtg")
