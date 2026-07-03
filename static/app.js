@@ -76,8 +76,7 @@ function clearTable(clearNumbersCol = true, clearAliCalcs = true, clearFiqhCalcs
         clearURL();
     }
 
-    const awlMessage = document.getElementById("awl-message");
-    awlMessage.textContent = "\u00A0";
+    renderAwlMessage(false);
     lastCase = "";
     renderCase("");
     setStatus("");
@@ -157,8 +156,7 @@ async function fillHeritageColumns(options = {}) {
             document.getElementById(`heritageFiqh${i}`).innerText = data.fiqh[i] || "";
         }
 
-        const awlMessage = document.getElementById("awl-message");
-        awlMessage.textContent = data.awl === true ? t("awl_message", "Awl was applied") : "\u00A0";
+        renderAwlMessage(data.awl);
         setStatus("");
     } catch (error) {
         console.error("Calculation error:", error);
@@ -234,6 +232,14 @@ function applyTranslations(lang) {
 
 function renderCase(caseName) {
     document.getElementById("the_case_value_id").innerText = caseName ? t(caseName, caseName) : "";
+}
+
+function renderAwlMessage(awlApplied) {
+    const isAwlApplied = awlApplied === true || awlApplied === "true" || awlApplied === 1 || awlApplied === "1";
+    const awlMessage = document.getElementById("awl-message");
+    awlMessage.textContent = isAwlApplied ? t("awl_message", "Awl was applied") : "";
+    awlMessage.classList.toggle("is-visible", isAwlApplied);
+    awlMessage.dataset.active = isAwlApplied ? "true" : "false";
 }
 
 function setBusy(isBusy, message = "") {
