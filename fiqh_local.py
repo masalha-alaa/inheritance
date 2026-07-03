@@ -1,14 +1,41 @@
+from __future__ import annotations
+
 from fractions import Fraction
 from io import StringIO
 from pathlib import Path
 
-import pandas as pd
-import yaml
-from bs4 import BeautifulSoup as bs
-from pandas import read_html
+try:
+    import pandas as pd
+    from pandas import read_html
+except ImportError:  # Browser/Pyodide static path.
+    pd = None
+    read_html = None
+
+try:
+    import yaml
+except ImportError:  # Browser/Pyodide static path.
+    yaml = None
+
+try:
+    from bs4 import BeautifulSoup as bs
+except ImportError:  # Browser/Pyodide static path.
+    bs = None
 
 from heirs import Heirs
 from my_utils import F, HeirsOrderInHtml, display_fraction_in_unicode
+
+
+DEFAULT_RELATIVE_DETAILS = {
+    "husband": {"id": "tb1"},
+    "wives": {"id": "tb2"},
+    "sons": {"id": "tb3"},
+    "daughters": {"id": "tb4"},
+    "father": {"id": "tb7"},
+    "mother": {"id": "tb8"},
+    "full_brothers": {"id": "tb12"},
+    "full_sisters": {"id": "tb13"},
+    "full_cousins": {"id": "tb24"},
+}
 
 
 class Fiqh:
@@ -18,8 +45,11 @@ class Fiqh:
 
     def initialize(self):
         config_filename = Path(__file__).with_name("fiqh_config.yml")
-        config = yaml.safe_load(config_filename.read_text())
-        self.relative_details = config["relative_details"]
+        if yaml is not None and config_filename.exists():
+            config = yaml.safe_load(config_filename.read_text())
+            self.relative_details = config["relative_details"]
+        else:
+            self.relative_details = DEFAULT_RELATIVE_DETAILS
 
     def run(self, heirs: Heirs, estate=24):
         dummy = self._dummy_results()
@@ -62,6 +92,8 @@ class Fiqh:
         return self._shares_to_response(shares, heirs, awl_applied)
 
     def parse_response(self, response):
+        if read_html is None:
+            return self._parse_response_without_pandas(response)
         shares_table = response.find("table", id="dgSharesCtg")
         df = read_html(StringIO(str(shares_table)))[0]
         df.columns = df.iloc[0]
@@ -70,35 +102,51 @@ class Fiqh:
         df["Share Percentage"] = df["Share Percentage"].apply(self._eval_percentage)
         return df
 
+    def _parse_response_without_pandas(self, response):
+        shares_table = response.find("table", id="dgSharesCtg")
+        if shares_table is None:
+            raise ValueError("Fiqh response did not contain a shares table")
+
+        rows = shares_table.find_all("tr")
+        headers = [cell.get_text(strip=True) for cell in rows[0].find_all(["td", "th"])]
+        parsed_rows = []
+        for row in rows[1:]:
+            values = [cell.get_text(strip=True) for cell in row.find_all(["td", "th"])]
+            parsed_row = dict(zip(headers, values))
+            if "Share Percentage" in parsed_row:
+                parsed_row["Share Percentage"] = self._eval_percentage(parsed_row["Share Percentage"])
+            parsed_rows.append(parsed_row)
+        return parsed_rows
+
     def _eval_percentage(self, percentage):
         return round(float(percentage.replace("%", "")) / 100, 4)
 
-    def fiqh_fields_to_dict(self, fiqh_fields: pd.DataFrame, heirs: Heirs, estate):
+    def fiqh_fields_to_dict(self, fiqh_fields, heirs: Heirs, estate):
         def get_share_per_capital(heirs_num, total_share_for_heirs):
             if heirs_num:
                 return float(total_share_for_heirs * estate) / heirs_num
             return 0
 
-        fiqh_fields.set_index("Relative Category", inplace=True)
+        fiqh_fields = self._fiqh_fields_by_category(fiqh_fields)
         shares_d = self._zero_shares()
-        if "Husband" in fiqh_fields.index:
-            shares_d["husband"] = F(fiqh_fields.loc["Husband", "Share Fraction"])
-        if "Wife" in fiqh_fields.index:
-            shares_d["wife"] = F(fiqh_fields.loc["Wife", "Share Fraction"])
-        if "Son" in fiqh_fields.index:
-            shares_d["son"] = F(fiqh_fields.loc["Son", "Share Fraction"])
-        if "Daughter" in fiqh_fields.index:
-            shares_d["daughter"] = F(fiqh_fields.loc["Daughter", "Share Fraction"])
-        if "Father" in fiqh_fields.index:
-            shares_d["father"] = F(fiqh_fields.loc["Father", "Share Fraction"])
-        if "Mother" in fiqh_fields.index:
-            shares_d["mother"] = F(fiqh_fields.loc["Mother", "Share Fraction"])
-        if "FullBrother" in fiqh_fields.index:
-            shares_d["brother"] = F(fiqh_fields.loc["FullBrother", "Share Fraction"])
-        if "FullSister" in fiqh_fields.index:
-            shares_d["sister"] = F(fiqh_fields.loc["FullSister", "Share Fraction"])
-        if "FullCousin" in fiqh_fields.index:
-            shares_d["relatives"] = F(fiqh_fields.loc["FullCousin", "Share Fraction"])
+        if "Husband" in fiqh_fields:
+            shares_d["husband"] = F(fiqh_fields["Husband"]["Share Fraction"])
+        if "Wife" in fiqh_fields:
+            shares_d["wife"] = F(fiqh_fields["Wife"]["Share Fraction"])
+        if "Son" in fiqh_fields:
+            shares_d["son"] = F(fiqh_fields["Son"]["Share Fraction"])
+        if "Daughter" in fiqh_fields:
+            shares_d["daughter"] = F(fiqh_fields["Daughter"]["Share Fraction"])
+        if "Father" in fiqh_fields:
+            shares_d["father"] = F(fiqh_fields["Father"]["Share Fraction"])
+        if "Mother" in fiqh_fields:
+            shares_d["mother"] = F(fiqh_fields["Mother"]["Share Fraction"])
+        if "FullBrother" in fiqh_fields:
+            shares_d["brother"] = F(fiqh_fields["FullBrother"]["Share Fraction"])
+        if "FullSister" in fiqh_fields:
+            shares_d["sister"] = F(fiqh_fields["FullSister"]["Share Fraction"])
+        if "FullCousin" in fiqh_fields:
+            shares_d["relatives"] = F(fiqh_fields["FullCousin"]["Share Fraction"])
 
         for k, v in shares_d.items():
             shares_d[k] = f"{display_fraction_in_unicode(v)}: {int(heirs[k])} x {get_share_per_capital(int(heirs[k]), v):.2f}"
@@ -200,9 +248,13 @@ class Fiqh:
                         "Share Percentage": round(float(shares[key]), 4),
                     }
                 )
+        if pd is None:
+            return rows
         return pd.DataFrame(rows, columns=["Relative Category", "Share Fraction", "Share Percentage"])
 
     def _shares_to_response(self, shares, heirs: Heirs, awl_applied):
+        if bs is None:
+            raise ImportError("BeautifulSoup is required to build HTML Fiqh responses")
         rows = [
             "<tr><td>Relative Category</td><td>Share Fraction</td><td>Share Percentage</td></tr>"
         ]
@@ -216,7 +268,16 @@ class Fiqh:
                     "</tr>"
                 )
         awl_text = "shares have exceeded 100%" if awl_applied else ""
-        return bs(f"<html><body>{awl_text}<table id='dgSharesCtg'>{''.join(rows)}</table></body></html>", features="lxml")
+        return bs(f"<html><body>{awl_text}<table id='dgSharesCtg'>{''.join(rows)}</table></body></html>", features="html.parser")
+
+    def _fiqh_fields_by_category(self, fiqh_fields):
+        if hasattr(fiqh_fields, "set_index"):
+            fiqh_fields.set_index("Relative Category", inplace=True)
+            return {
+                category: {"Share Fraction": fiqh_fields.loc[category, "Share Fraction"]}
+                for category in fiqh_fields.index
+            }
+        return {row["Relative Category"]: row for row in fiqh_fields}
 
     def _form_fields_to_heirs(self, form_fields_dict):
         if self.relative_details is None:

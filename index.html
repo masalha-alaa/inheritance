@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inheritance Calculator</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+
+        input[type="number"] {
+            width: 100%;
+        }
+
+        #calculator-status {
+            display: inline-block;
+            min-height: 1.2em;
+            margin-inline-start: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<button id="switch-en">English</button>
+<button id="switch-ar">العربية</button>
+<button id="dark-mode-toggle" style="float: inline-end;" data-lang="dark_mode_switch">Toggle Dark Mode</button>
+
+<h1 data-lang="title">Inheritance Calculator</h1>
+
+<div>
+    <label data-lang="estate" for="estate-input">Estate:</label>
+    <input type="number" id="estate-input" name="estate" min="0" max="1000000000" value="24"
+           placeholder="24" onkeydown="return isNumberKey(event);" oninput="limitInput(this, 1000000000)">
+</div>
+
+<!-- IF HEIRS ORDER IS CHANGED, MUST CHANGE HeirsOrderInHtml(Enum) IN PYTHON -->
+<table>
+    <thead>
+    <tr>
+        <th data-lang="heir">Heir</th>
+        <th data-lang="number">Number</th>
+        <th>
+            <span data-lang="heritage_our_study">Heritage (by Ali Aloush)</span><br>
+            <span data-lang="shares_hint">share: count x amount (+Radd)</span>
+        </th>
+        <th>
+            <span data-lang="heritage_fiqh">Heritage (Fiqh)</span><br>
+            <span data-lang="fiqh_shares_hint">share: count x amount</span><br>
+            <span id="awl-message" style="color: red; font-size: small;">&nbsp;</span>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="table-body">
+    <tr>
+        <td data-lang="husband">Husband</td>
+        <td><input type="number" id="number0" value="0" min="0" max="1" onchange="validateHusbandWife('husband')" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy0" class="ltr-text"></td>
+        <td id="heritageFiqh0" class="ltr-text"></td>
+    </tr>
+    <tr>
+        <td data-lang="wife">Wife</td>
+        <td><input type="number" id="number1" value="0" min="0" max="1" onchange="validateHusbandWife('wife')" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy1" class="ltr-text"></td>
+        <td id="heritageFiqh1" class="ltr-text"></td>
+    </tr>
+    <tr>
+        <td data-lang="son">Son</td>
+        <td><input type="number" id="number2" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
+        <td id="heritageStudy2" class="ltr-text"></td>
+        <td id="heritageFiqh2" class="ltr-text"></td>
+    </tr>
+    <tr>
+        <td data-lang="daughter">Daughter</td>
+        <td><input type="number" id="number3" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
+        <td id="heritageStudy3" class="ltr-text"></td>
+        <td id="heritageFiqh3" class="ltr-text"></td>
+    </tr>
+    <tr>
+        <td data-lang="father">Father</td>
+        <td><input type="number" id="number4" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy4" class="ltr-text"></td>
+        <td id="heritageFiqh4" class="ltr-text"></td>
+    </tr>
+    <tr>
+        <td data-lang="mother">Mother</td>
+        <td><input type="number" id="number5" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy5" class="ltr-text"></td>
+        <td id="heritageFiqh5" class="ltr-text"></td>
+    </tr>
+    <tr>
+        <td data-lang="brother">Brother</td>
+        <td><input type="number" id="number6" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
+        <td id="heritageStudy6" class="ltr-text"></td>
+        <td id="heritageFiqh6" class="ltr-text"></td>
+    </tr>
+    <tr>
+        <td data-lang="sister">Sister</td>
+        <td><input type="number" id="number7" value="0" min="0" max="10" oninput="limitInput(this, 10)"></td>
+        <td id="heritageStudy7" class="ltr-text"></td>
+        <td id="heritageFiqh7" class="ltr-text"></td>
+    </tr>
+    <tr>
+        <td data-lang="relatives">Relatives</td>
+        <td><input type="number" id="number8" value="0" min="0" max="1" oninput="limitInput(this, 1)"></td>
+        <td id="heritageStudy8" class="ltr-text"></td>
+        <td id="heritageFiqh8" class="ltr-text"></td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<button id="calculate-button" data-lang="calculate" onclick="fillHeritageColumns()">Calculate Heritage</button>
+<button data-lang="clear" onclick="clearTable()">Clear</button>
+<span id="calculator-status" role="status" aria-live="polite"></span>
+<br><br>
+<b><label data-lang="the_case" style="display: inline-block; margin-right: 5px;">The case:</label></b>
+<label id="the_case_value_id" style="display: inline-block;"></label>
+
+<hr style="height:2px;border-width:0;background-color:gray">
+
+<div class="important-notes">
+    <h3 data-lang="notes">Important Notes</h3>
+    <ul>
+        <li data-lang="note1"></li>
+        <li data-lang="note2"></li>
+        <li data-lang="note3"></li>
+        <li data-lang="note4"></li>
+        <li data-lang="note5"></li>
+        <li data-lang="note6"></li>
+        <li data-lang="note7"></li>
+        <li data-lang="note8"></li>
+        <li data-lang="note9"></li>
+        <li data-lang="note10"></li>
+        <li data-lang="note11"></li>
+    </ul>
+</div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js" defer></script>
+<script src="static/app.js" defer></script>
+</body>
+</html>

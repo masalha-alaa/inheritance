@@ -13,3 +13,9 @@ Following is an example of the difference between A.A.'s approach and the regula
 * This website is a beta version, please contact us if you find any errors or bugs.
 * The 'Heritage (by Ali Aloush)' values are based on Ali's YouTube series ["What you haven't heard of about Inheritance"](https://www.youtube.com/playlist?list=PLydybbv8P4rt9OiWJTUslroR7EzUOiVmg) (English subtitles included).
 * The 'Heritage (Fiqh)' values are based on the website http://inheritance.ilmsummit.org/.
+
+<h3>Static GitHub Pages deployment</h3>
+
+The root `index.html` is a fully static version of the calculator. It loads the existing Python calculation modules in the browser through Pyodide, so GitHub Pages can serve the app without Flask routes.
+
+To switch the Fiqh implementation, edit `FIQH_ENGINE` in `settings.py`. The static GitHub Pages version should use `fiqh_local`; Python callers can switch it back to `fiqh` if the live website-backed implementation is desired.
