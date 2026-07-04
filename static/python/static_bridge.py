@@ -1,10 +1,9 @@
 import json
-from importlib import import_module
 
+from fiqh_local import Fiqh
 from heirs import Heirs
 from inheritance import get_results
 from my_utils import HeirsOrderInHtml as HOIH
-from settings import FIQH_ENGINE
 
 
 _fiqh = None
@@ -13,8 +12,7 @@ _fiqh = None
 def _get_fiqh():
     global _fiqh
     if _fiqh is None:
-        fiqh_module = import_module(FIQH_ENGINE)
-        _fiqh = fiqh_module.Fiqh()
+        _fiqh = Fiqh()
         _fiqh.initialize()
     return _fiqh
 

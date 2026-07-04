@@ -1,4 +1,3 @@
-import os
 import unittest
 
 from heirs import Heirs
@@ -228,20 +227,6 @@ class FiqhLocalTest(unittest.TestCase):
 
         self.assertIn("shares have exceeded 100%", response.text)
         self.assertEqual(expected_result(heirs, {"husband": "3/7", "sister": "4/7"}), result)
-
-    @unittest.skipUnless(os.environ.get("FIQH_LIVE_WEBSITE_TESTS") == "1", "set FIQH_LIVE_WEBSITE_TESTS=1 to compare against the live website")
-    def test_live_website_parity_for_all_snapshot_cases(self):
-        from fiqh import Fiqh as WebsiteFiqh
-
-        website_fiqh = WebsiteFiqh()
-        website_fiqh.initialize()
-
-        for case_data in WEBSITE_DERIVED_CASES:
-            name, heirs_kwargs, _expected_shares, *_optional_awl = case_data
-            heirs = Heirs(**heirs_kwargs)
-
-            with self.subTest(name=name):
-                self.assertEqual(website_fiqh.run(heirs), self.fiqh.run(heirs))
 
 
 if __name__ == "__main__":

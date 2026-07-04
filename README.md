@@ -17,5 +17,3 @@ Following is an example of the difference between A.A.'s approach and the regula
 <h3>Static GitHub Pages deployment</h3>
 
 The root `index.html` is a fully static version of the calculator. It loads the existing Python calculation modules in the browser through Pyodide, so GitHub Pages can serve the app without Flask routes.
-
-To switch the Fiqh implementation, edit `FIQH_ENGINE` in `settings.py`. The static GitHub Pages version should use `fiqh_local`; Python callers can switch it back to `fiqh` if the live website-backed implementation is desired.

@@ -13,12 +13,10 @@ const HEIR_PARAM_NAMES = [
 const PYODIDE_VERSION = "0.26.4";
 const PYODIDE_INDEX_URL = `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`;
 const PYTHON_FILES = [
-    {source: "settings.py", target: "settings.py"},
     {source: "heirs.py", target: "heirs.py"},
     {source: "my_utils.py", target: "my_utils.py"},
     {source: "inheritance.py", target: "inheritance.py"},
     {source: "fiqh_local.py", target: "fiqh_local.py"},
-    {source: "fiqh.py", target: "fiqh.py"},
     {source: "fiqh_config.yml", target: "fiqh_config.yml"},
     {source: "static/python/static_bridge.py", target: "static_bridge.py"},
 ];
