@@ -33,10 +33,10 @@
     "note4": "The 'Heritage (Fiqh)' values are calculated locally using the Fiqh rules supported by this calculator.",
     "note5": "'Radd' in Ali Aloush's approach is the resulted surplus when there's a missing heir (his / her share is then transferred to the existing heirs).",
     "note6": "'Radd' is divided between the members of each heir group equally",
-    "note7": "Currently the algorithm can handle only up to one wife. If your usecase has multiple wives, please simply divide the calculated wife's share between all wives equally.",
+    "note7": "Currently the algorithm can handle only up to one wife. If your use case has multiple wives, please simply divide the calculated wife's share between all wives equally.",
     "note8": "Currently the algorithm does not support grandparents. According to Ali Aloush's study, the grandparents from the father's side / mother's side take the father's / mother's inheritance roles (respectively) when they are absent. So please fill their numbers in the father / mother fields if the father / mother has passed and the grandfather / grandmother is alive.",
     "note9": "Currently the algorithm does not support grandchildren. According to Ali Aloush's study, the grandchildren inherit exactly as the children do (grandsons as sons and granddaughters as daughters), regardless of whether the direct children are alive or not. E.g. if the sons' share is 100K, and there are 2 sons and 3 grandsons, each son or grandson will take 20K.",
     "note10": "According to Ali Aloush's study, unlike the Fiqh's ideology, there is no differentiation between full-siblings and half-siblings. That's why they're not separated in the table, and the Fiqh's solution in the 'Heritage (Fiqh)' column will be calculated as if all siblings were full-siblings (although in the Fiqh approach they do separate between half and full).",
-    "note11": "Currently the algorithm can handle up to one relative. If your usecase has multiple relatives, please simply divide the calculated 'Relatives' share between them equally.",
+    "note11": "Currently the algorithm can handle up to one relative. If your use case has multiple relatives, please simply divide the calculated 'Relatives' share between them equally.",
     "note12": "Ali Aloush's study and its results do not represent the opinion of the website developer."
 }
