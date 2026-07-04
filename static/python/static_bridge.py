@@ -13,7 +13,6 @@ def _get_fiqh():
     global _fiqh
     if _fiqh is None:
         _fiqh = Fiqh()
-        _fiqh.initialize()
     return _fiqh
 
 

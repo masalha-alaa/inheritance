@@ -1,125 +1,24 @@
 from __future__ import annotations
 
 from fractions import Fraction
-from io import StringIO
-from pathlib import Path
-
-try:
-    import pandas as pd
-    from pandas import read_html
-except ImportError:  # Browser/Pyodide static path.
-    pd = None
-    read_html = None
-
-try:
-    import yaml
-except ImportError:  # Browser/Pyodide static path.
-    yaml = None
-
-try:
-    from bs4 import BeautifulSoup as bs
-except ImportError:  # Browser/Pyodide static path.
-    bs = None
 
 from heirs import Heirs
 from my_utils import F, HeirsOrderInHtml, display_fraction_in_unicode
 
 
-DEFAULT_RELATIVE_DETAILS = {
-    "husband": {"id": "tb1"},
-    "wives": {"id": "tb2"},
-    "sons": {"id": "tb3"},
-    "daughters": {"id": "tb4"},
-    "father": {"id": "tb7"},
-    "mother": {"id": "tb8"},
-    "full_brothers": {"id": "tb12"},
-    "full_sisters": {"id": "tb13"},
-    "full_cousins": {"id": "tb24"},
-}
-
-
 class Fiqh:
-    def __init__(self):
-        self.br = None
-        self.relative_details = None
-
-    def initialize(self):
-        config_filename = Path(__file__).with_name("fiqh_config.yml")
-        if yaml is not None and config_filename.exists():
-            config = yaml.safe_load(config_filename.read_text())
-            self.relative_details = config["relative_details"]
-        else:
-            self.relative_details = DEFAULT_RELATIVE_DETAILS
-
     def run(self, heirs: Heirs, estate=24):
         dummy = self._dummy_results()
         if not self._has_supported_input(heirs):
             return dummy, False
 
         shares, awl_applied = self._calculate_shares(heirs)
-        df = self._shares_to_fiqh_fields(shares, heirs)
+        fiqh_fields = self._shares_to_fiqh_fields(shares, heirs)
         try:
-            final_results = self.fiqh_fields_to_dict(df, heirs, estate=estate)
+            final_results = self.fiqh_fields_to_dict(fiqh_fields, heirs, estate=estate)
         except ValueError:
             final_results = dummy
         return final_results if final_results else dummy, awl_applied
-
-    def heirs_to_input_fields(self, heirs: Heirs):
-        return {
-            "husband": int(heirs.husband),
-            "wives": int(heirs.wife),
-            "sons": heirs.son,
-            "daughters": heirs.daughter,
-            "father": int(heirs.father),
-            "mother": int(heirs.mother),
-            "full_brothers": heirs.brother,
-            "full_sisters": heirs.sister,
-            "full_cousins": heirs.relatives,
-        }
-
-    def inflate(self, combination_d, relative_details):
-        inflated = {}
-        for k, v in combination_d.items():
-            inflated[relative_details[k]["id"]] = str(v)
-        return inflated
-
-    def send_request(self, br, form_fields_dict):
-        heirs = self._form_fields_to_heirs(form_fields_dict)
-        if not self._has_supported_input(heirs):
-            return bs("<html><body>No relatives entered.</body></html>", features="lxml")
-
-        shares, awl_applied = self._calculate_shares(heirs)
-        return self._shares_to_response(shares, heirs, awl_applied)
-
-    def parse_response(self, response):
-        if read_html is None:
-            return self._parse_response_without_pandas(response)
-        shares_table = response.find("table", id="dgSharesCtg")
-        df = read_html(StringIO(str(shares_table)))[0]
-        df.columns = df.iloc[0]
-        df.drop(0, inplace=True)
-        df.reset_index(drop=True, inplace=True)
-        df["Share Percentage"] = df["Share Percentage"].apply(self._eval_percentage)
-        return df
-
-    def _parse_response_without_pandas(self, response):
-        shares_table = response.find("table", id="dgSharesCtg")
-        if shares_table is None:
-            raise ValueError("Fiqh response did not contain a shares table")
-
-        rows = shares_table.find_all("tr")
-        headers = [cell.get_text(strip=True) for cell in rows[0].find_all(["td", "th"])]
-        parsed_rows = []
-        for row in rows[1:]:
-            values = [cell.get_text(strip=True) for cell in row.find_all(["td", "th"])]
-            parsed_row = dict(zip(headers, values))
-            if "Share Percentage" in parsed_row:
-                parsed_row["Share Percentage"] = self._eval_percentage(parsed_row["Share Percentage"])
-            parsed_rows.append(parsed_row)
-        return parsed_rows
-
-    def _eval_percentage(self, percentage):
-        return round(float(percentage.replace("%", "")) / 100, 4)
 
     def fiqh_fields_to_dict(self, fiqh_fields, heirs: Heirs, estate):
         def get_share_per_capital(heirs_num, total_share_for_heirs):
@@ -248,69 +147,10 @@ class Fiqh:
                         "Share Percentage": round(float(shares[key]), 4),
                     }
                 )
-        if pd is None:
-            return rows
-        return pd.DataFrame(rows, columns=["Relative Category", "Share Fraction", "Share Percentage"])
-
-    def _shares_to_response(self, shares, heirs: Heirs, awl_applied):
-        if bs is None:
-            raise ImportError("BeautifulSoup is required to build HTML Fiqh responses")
-        rows = [
-            "<tr><td>Relative Category</td><td>Share Fraction</td><td>Share Percentage</td></tr>"
-        ]
-        for key in self._output_keys():
-            if int(heirs[key]) or shares[key]:
-                rows.append(
-                    "<tr>"
-                    f"<td>{self._relative_category(key)}</td>"
-                    f"<td>{self._fraction_to_str(shares[key])}</td>"
-                    f"<td>{float(shares[key]) * 100:.2f}%</td>"
-                    "</tr>"
-                )
-        awl_text = "shares have exceeded 100%" if awl_applied else ""
-        return bs(f"<html><body>{awl_text}<table id='dgSharesCtg'>{''.join(rows)}</table></body></html>", features="html.parser")
+        return rows
 
     def _fiqh_fields_by_category(self, fiqh_fields):
-        if hasattr(fiqh_fields, "set_index"):
-            fiqh_fields.set_index("Relative Category", inplace=True)
-            return {
-                category: {"Share Fraction": fiqh_fields.loc[category, "Share Fraction"]}
-                for category in fiqh_fields.index
-            }
         return {row["Relative Category"]: row for row in fiqh_fields}
-
-    def _form_fields_to_heirs(self, form_fields_dict):
-        if self.relative_details is None:
-            self.initialize()
-        reverse_details = {details["id"]: name for name, details in self.relative_details.items()}
-        heirs_kwargs = {
-            "husband": 0,
-            "wife": 0,
-            "son": 0,
-            "daughter": 0,
-            "father": 0,
-            "mother": 0,
-            "brother": 0,
-            "sister": 0,
-            "relatives": 0,
-        }
-        field_to_heir = {
-            "husband": "husband",
-            "wives": "wife",
-            "sons": "son",
-            "daughters": "daughter",
-            "father": "father",
-            "mother": "mother",
-            "full_brothers": "brother",
-            "full_sisters": "sister",
-            "full_cousins": "relatives",
-        }
-        for field_id, value in form_fields_dict.items():
-            field_name = reverse_details.get(field_id)
-            heir_name = field_to_heir.get(field_name)
-            if heir_name:
-                heirs_kwargs[heir_name] = int(value)
-        return Heirs(**heirs_kwargs)
 
     def _has_supported_input(self, heirs: Heirs):
         if not self._has_any_heirs(heirs):
@@ -370,7 +210,6 @@ if __name__ == "__main__":
     from pprint import pprint
 
     fiqh = Fiqh()
-    fiqh.initialize()
     heirs = Heirs(mother=True, brother=1)
     shares, awl_applied = fiqh.run(heirs)
     pprint(shares, sort_dicts=False)

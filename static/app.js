@@ -17,7 +17,6 @@ const PYTHON_FILES = [
     {source: "my_utils.py", target: "my_utils.py"},
     {source: "inheritance.py", target: "inheritance.py"},
     {source: "fiqh_local.py", target: "fiqh_local.py"},
-    {source: "fiqh_config.yml", target: "fiqh_config.yml"},
     {source: "static/python/static_bridge.py", target: "static_bridge.py"},
 ];
 

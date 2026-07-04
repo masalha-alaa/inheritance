@@ -174,7 +174,6 @@ def expected_result(heirs, expected_shares, estate=24):
 class FiqhLocalTest(unittest.TestCase):
     def setUp(self):
         self.fiqh = Fiqh()
-        self.fiqh.initialize()
 
     def test_website_derived_calculation_paths(self):
         for case_data in WEBSITE_DERIVED_CASES:
@@ -193,40 +192,6 @@ class FiqhLocalTest(unittest.TestCase):
 
         self.assertFalse(awl_applied)
         self.assertEqual({h: f"{display_fraction_in_unicode(F(0, 1))} ≡ 0" for h in HeirsOrderInHtml}, result)
-
-    def test_public_compatibility_helpers(self):
-        heirs = Heirs(wife=1, son=2, daughter=1, father=1, mother=1, brother=3, sister=4, relatives=1)
-        fields = self.fiqh.heirs_to_input_fields(heirs)
-        inflated = self.fiqh.inflate(fields, self.fiqh.relative_details)
-
-        self.assertEqual(
-            {
-                "husband": 0,
-                "wives": 1,
-                "sons": 2,
-                "daughters": 1,
-                "father": 1,
-                "mother": 1,
-                "full_brothers": 3,
-                "full_sisters": 4,
-                "full_cousins": 1,
-            },
-            fields,
-        )
-        self.assertEqual(
-            {"tb1": "0", "tb2": "1", "tb3": "2", "tb4": "1", "tb7": "1", "tb8": "1", "tb12": "3", "tb13": "4", "tb24": "1"},
-            inflated,
-        )
-
-    def test_send_request_and_parse_response_compatibility(self):
-        heirs = Heirs(husband=1, sister=2)
-        fields = self.fiqh.inflate(self.fiqh.heirs_to_input_fields(heirs), self.fiqh.relative_details)
-        response = self.fiqh.send_request(None, fields)
-        parsed = self.fiqh.parse_response(response)
-        result = self.fiqh.fiqh_fields_to_dict(parsed, heirs, estate=24)
-
-        self.assertIn("shares have exceeded 100%", response.text)
-        self.assertEqual(expected_result(heirs, {"husband": "3/7", "sister": "4/7"}), result)
 
 
 if __name__ == "__main__":
