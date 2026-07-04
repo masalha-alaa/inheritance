@@ -20,9 +20,12 @@ const PYTHON_FILES = [
     {source: "static/python/static_bridge.py", target: "static_bridge.py"},
 ];
 
-let currentLang = "en";
+let currentLang = "ar";
 let calculatorPromise = null;
 let lastCase = "";
+
+const DEFAULT_LANGUAGE = "ar";
+const SYSTEM_THEME_QUERY = "(prefers-color-scheme: dark)";
 
 const translations = {
     en: null,
@@ -222,8 +225,11 @@ function applyTranslations(lang) {
         }
     });
 
+    const direction = lang === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = lang;
+    document.documentElement.dir = direction;
     document.body.lang = lang;
-    document.body.style.direction = lang === "ar" ? "rtl" : "ltr";
+    document.body.style.direction = direction;
     renderCase(lastCase);
 }
 
@@ -247,6 +253,38 @@ function setBusy(isBusy, message = "") {
 
 function setStatus(message) {
     document.getElementById("calculator-status").textContent = message;
+}
+
+function getStoredTheme() {
+    const theme = localStorage.getItem("theme");
+    return theme === "dark" || theme === "light" ? theme : null;
+}
+
+function getSystemTheme() {
+    return window.matchMedia?.(SYSTEM_THEME_QUERY).matches ? "dark" : "light";
+}
+
+function applyTheme(theme) {
+    document.body.classList.toggle("dark-mode", theme === "dark");
+}
+
+function bindSystemThemeChanges() {
+    const mediaQuery = window.matchMedia?.(SYSTEM_THEME_QUERY);
+    if (!mediaQuery) {
+        return;
+    }
+
+    const listener = () => {
+        if (getStoredTheme() === null) {
+            applyTheme(getSystemTheme());
+        }
+    };
+
+    if (typeof mediaQuery.addEventListener === "function") {
+        mediaQuery.addEventListener("change", listener);
+    } else if (typeof mediaQuery.addListener === "function") {
+        mediaQuery.addListener(listener);
+    }
 }
 
 function populateFromQuery() {
@@ -274,20 +312,20 @@ function bindEvents() {
     document.getElementById("switch-en").addEventListener("click", () => loadLanguage("en"));
     document.getElementById("switch-ar").addEventListener("click", () => loadLanguage("ar"));
     document.getElementById("dark-mode-toggle").addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        const nextTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+        applyTheme(nextTheme);
+        localStorage.setItem("theme", nextTheme);
     });
     document.getElementById("estate-input").addEventListener("keydown", checkEnterKey);
 }
 
 async function boot() {
     bindEvents();
+    bindSystemThemeChanges();
 
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
+    applyTheme(getStoredTheme() || getSystemTheme());
 
-    await loadLanguage(localStorage.getItem("language") === "ar" ? "ar" : "en");
+    await loadLanguage(localStorage.getItem("language") === "en" ? "en" : DEFAULT_LANGUAGE);
 
     const hasShareableParams = populateFromQuery();
     if (hasShareableParams) {
