@@ -1,0 +1,2 @@
+- Always use the project's virtual environment for Python commands. On Windows, run Python as `./.venv/Scripts/python.exe` and pytest as `./.venv/Scripts/python.exe -m pytest`.
+- Do not install packages into global Python for this project; install them into `.venv`.
