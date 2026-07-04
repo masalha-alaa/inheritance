@@ -13,3 +13,13 @@ Following is an example of the difference between A.A.'s approach and the regula
 * This website is a beta version, please contact us if you find any errors or bugs.
 * The 'Heritage (by Ali Aloush)' values are based on Ali's YouTube series ["What you haven't heard of about Inheritance"](https://www.youtube.com/playlist?list=PLydybbv8P4rt9OiWJTUslroR7EzUOiVmg) (English subtitles included).
 * The 'Heritage (Fiqh)' values are based on the website http://inheritance.ilmsummit.org/.
+
+<h3>Fiqh engine selection</h3>
+
+By default, the app uses `FIQH_ENGINE` in `settings.py`. Valid values are `fiqh` for the legacy live website-backed implementation and `fiqh_local` for the local implementation.
+
+For a one-off local run, override the setting with:
+
+```bash
+python app.py --fiqh-engine fiqh_local
+```

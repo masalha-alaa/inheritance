@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from heirs import Heirs
-from fiqh import Fiqh
+from fiqh_engine import create_fiqh, resolve_fiqh_engine_name
 from inheritance import get_results
 from pprint import pprint
 from my_utils import HeirsOrderInHtml as HOIH
@@ -11,9 +11,9 @@ app = Flask(__name__)
 app.config['DEBUG'] = False
 # app.config['DEBUG'] = True
 app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024  # Limit to 8MB
+app.config['FIQH_ENGINE'] = resolve_fiqh_engine_name()
 CORS(app)
-app.fiqh = Fiqh()
-app.fiqh.initialize()
+app.fiqh = create_fiqh(app.config['FIQH_ENGINE'])
 
 
 # Define a route to serve the HTML file
