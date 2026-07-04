@@ -23,6 +23,7 @@ const PYTHON_FILES = [
 let currentLang = "ar";
 let calculatorPromise = null;
 let lastCase = "";
+let lastAwlApplied = false;
 
 const DEFAULT_LANGUAGE = "ar";
 const SYSTEM_THEME_QUERY = "(prefers-color-scheme: dark)";
@@ -231,6 +232,7 @@ function applyTranslations(lang) {
     document.body.lang = lang;
     document.body.style.direction = direction;
     renderCase(lastCase);
+    renderAwlMessage(lastAwlApplied);
 }
 
 function renderCase(caseName) {
@@ -239,6 +241,7 @@ function renderCase(caseName) {
 
 function renderAwlMessage(awlApplied) {
     const isAwlApplied = awlApplied === true || awlApplied === "true" || awlApplied === 1 || awlApplied === "1";
+    lastAwlApplied = isAwlApplied;
     const awlMessage = document.getElementById("awl-message");
     awlMessage.textContent = isAwlApplied ? t("awl_message", "Awl was applied") : "";
     awlMessage.classList.toggle("is-visible", isAwlApplied);
