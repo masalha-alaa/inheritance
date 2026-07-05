@@ -5,7 +5,7 @@ A.A. bases his approach solely on common sense and other Quranic verses to under
 
 Following is an example of the difference between A.A.'s approach and the regular Fiqh approach regarding the inheritance case involving a husband and two sisters:
 ![husband-2-sisters-inheritance](https://github.com/user-attachments/assets/ea364306-4adc-43aa-ab34-369636ecf5a4)  
-<i>Try it on the website: https://inheritance-7cf65bbef2ae.herokuapp.com/?estate=24&husband=1&wife=0&son=0&daughter=0&father=0&mother=0&brother=0&sister=2&relatives=0</i>
+<i>Try it on the website: https://masalha-alaa.github.io/inheritance/?estate=24&husband=1&wife=0&son=0&daughter=0&father=0&mother=0&brother=0&sister=2&relatives=0</i>
 
 <h3>Notes</h3>
 
