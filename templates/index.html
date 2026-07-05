@@ -30,6 +30,7 @@
 
 
 <h1 data-lang="title">Inheritance Calculator</h1>
+<p class="site-subtitle" data-lang="subtitle"></p>
 
 <div>
     <label data-lang="estate" for="estate-input">Estate:</label>
@@ -336,7 +337,7 @@
             const key = el.getAttribute('data-lang');
 
             // Check if the key starts with a specific value, like 'important_notes'
-            if (key.startsWith('note')) {
+            if (key.startsWith('note') || key === 'subtitle') {
                 el.innerHTML = translations[lang][key];  // Set innerHTML for content with links
             } else {
                 el.textContent = translations[lang][key];  // Set textContent for plain text
